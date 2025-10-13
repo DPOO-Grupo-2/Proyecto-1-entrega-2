@@ -12,8 +12,8 @@ public class tiqueteBasico extends tiquete{
 	public tiqueteBasico(String id, boolean transferible, String silla, localidad localidad, evento evento, double precio) {
 		super(id, transferible, silla, localidad, evento);
 		this.precioTiqueteBasico = precio;
-
 	}
+	
 
 
 	
