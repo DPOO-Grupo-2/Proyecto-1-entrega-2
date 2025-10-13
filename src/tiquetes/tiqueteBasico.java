@@ -1,7 +1,6 @@
 package tiquetes;
 import evento.evento;
 import evento.localidad;
-import compra.vendedorTiquetes;
 
 
 
@@ -13,8 +12,20 @@ public class tiqueteBasico extends tiquete{
 		super(id, transferible, silla, localidad, evento);
 		this.precioTiqueteBasico = precio;
 	}
-	
 
+
+	public double getPrecioTiqueteBasico() {
+		return precioTiqueteBasico;
+	}
+
+
+	public void setPrecioTiqueteBasico(double precioTiqueteBasico) {
+		this.precioTiqueteBasico = precioTiqueteBasico;
+	}
+	
+public void usarTiqueteBasico() {
+	this.usado = true;
+}
 
 	
 

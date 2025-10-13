@@ -1,5 +1,7 @@
 package tiquetes;
 
+import java.util.ArrayList;
+
 import evento.evento;
 import evento.localidad;
 public abstract class tiquete {
@@ -7,9 +9,9 @@ public abstract class tiquete {
 	private String id;
 	private boolean transferible;
 	public String silla;
-	private boolean usado;
+	protected boolean usado;
 	public localidad localidad;
-	public evento evento;
+	public ArrayList<evento> eventos;
 	
 	
 public tiquete(String id, boolean transferible, String silla, localidad localidad, evento evento) {
@@ -18,7 +20,8 @@ public tiquete(String id, boolean transferible, String silla, localidad localida
 	this.silla = silla;
 	this.transferible = transferible;
 	this.usado = false;
-	this.evento = evento;
+	this.eventos  = new ArrayList<evento>();
+	eventos.addLast(evento);
 }
 
 
@@ -66,9 +69,6 @@ public localidad getLocalidad() {
 	return localidad;
 }
 
-public void UsarTiquete(tiquete tiquete) {
-	setUsado(true);
-}
 
 
 

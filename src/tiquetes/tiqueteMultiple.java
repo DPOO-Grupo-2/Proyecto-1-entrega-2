@@ -22,11 +22,9 @@ public class tiqueteMultiple extends tiquete {
 		
 	}
 	
-public void  añadirTiquete(tiqueteMultiple tiquete, tiqueteBasico tiquete2) {
-	ArrayList<tiquete> array = this.tiquetes;
-	array.add(tiquete2);
-			
-}
+public void añadirTiquete(tiquete nuevoTiquete) {
+	    this.tiquetes.add(nuevoTiquete);
+	}
 
 public int getNumeroDeTiquetes() {
 	return numeroDeTiquetes;
@@ -40,17 +38,11 @@ public ArrayList<tiquete> getTiquetes() {
 	return tiquetes;
 }
 
-public void setTiquetes(ArrayList<tiquete> tiquetes) {
-	this.tiquetes = tiquetes;
-}
 
 public ArrayList<tiquete> getTiquetesUsados() {
 	return tiquetesUsados;
 }
 
-public void setTiquetesUsados(ArrayList<tiquete> tiquetesUsados) {
-	this.tiquetesUsados = tiquetesUsados;
-}
 
 public double getPrecioTiqueteMultiple() {
 	return precioTiqueteMultiple;
@@ -59,5 +51,20 @@ public double getPrecioTiqueteMultiple() {
 public void setPrecioTiqueteMultiple(double precioTiqueteMultiple) {
 	this.precioTiqueteMultiple = precioTiqueteMultiple;
 }
+
+public void usarTiqueteMultiple() {
+    if (!tiquetes.isEmpty()) {
+        tiquete unidad = tiquetes.remove(tiquetes.size() - 1);
+        unidad.setUsado(true);
+        tiquetesUsados.add(unidad);
+
+
+        if (tiquetes.isEmpty()) {
+            setUsado(true);
+        }
+    }
+}
+
+
 
 }

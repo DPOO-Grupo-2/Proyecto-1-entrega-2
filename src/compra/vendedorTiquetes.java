@@ -35,9 +35,12 @@ public class vendedorTiquetes {
 
         double precio = localidad1.getPrecioLocalidad() * (1 + evento.getCargoPorcentual());
         precio += evento.getCuotaAdicional();
+        
+        //falta implementar funcion de que si el organizador es el que compra el tiquete el precio es 0
 
-
-        boolean enumerada = localidad1.getEnumeracion();
+        
+        	
+        	boolean enumerada = localidad1.getEnumeracion();
         String silla1 = null;
 
         if (enumerada) {
@@ -64,7 +67,7 @@ public class vendedorTiquetes {
                 tiqueteBasico tiquete2 = new tiqueteBasico(
                     codigo, true, silla1, localidad1, evento, precio
                 );
-                tiquetes.añadirTiquete(tiquetes, tiquete2);
+                tiquetes.añadirTiquete( tiquete2);
             }
 
             return tiquetes;

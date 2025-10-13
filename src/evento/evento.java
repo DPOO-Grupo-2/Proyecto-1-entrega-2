@@ -26,4 +26,9 @@ public class evento {
 		return null;
 	}
 
+	public String getNombreEvento() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
