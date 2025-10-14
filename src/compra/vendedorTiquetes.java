@@ -31,10 +31,11 @@ public class vendedorTiquetes {
             codigo = "0" + codigo;
 
         codigos.add(codigo); 
+       
+        
+        
 
 
-        double precio = localidad1.getPrecioLocalidad() * (1 + evento.getCargoPorcentual());
-        precio += evento.getCuotaAdicional();
         
         //falta implementar funcion de que si el organizador es el que compra el tiquete el precio es 0
 
@@ -51,12 +52,19 @@ public class vendedorTiquetes {
         }
 
         if (tipoTiquete.equalsIgnoreCase("basico")) {
+            double precio = localidad1.getPrecioBasico() * (1 + evento.getCargoPorcentual());
+            precio += evento.getCuotaAdicional();
+           
             return new tiqueteBasico(codigo, true, silla1, localidad1, evento, precio);
 
         } else if (tipoTiquete.equalsIgnoreCase("temporada")) {
+            double precio = localidad1.getPrecioTemporada() * (1 + evento.getCargoPorcentual());
+            precio += evento.getCuotaAdicional();
             return new tiqueteTemporada(codigo, true, silla1, localidad1, evento, precio);
 
         } else if (tipoTiquete.equalsIgnoreCase("multiple")) {
+            double precio = localidad1.getPrecioMultiple() * (1 + evento.getCargoPorcentual());
+            precio += evento.getCuotaAdicional();
             double precioMultiple = precio * numeroTiquetes;
 
             tiqueteMultiple tiquetes = new tiqueteMultiple(
