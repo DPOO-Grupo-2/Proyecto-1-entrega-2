@@ -37,25 +37,18 @@ public class Organizador extends Usuario{
     }
 
     public boolean cancelarEvento(Evento evento) {
-        if (evento == null) {
+        if (evento == null) { 
             System.err.println("Error: evento nulo.");
             return false;
         }
-        if (!eventosCreados.contains(evento)) {
-            System.err.println("Error: el evento no pertenece a este organizador.");
-            return false;
-        }
+
         if (evento.getCancelado()) {
             return true; 
         }
+
         evento.setCancelado(true);
-        Venue v = evento.getVenue();
-        if (v != null) {
-            v.liberarFecha(evento.getFecha());
-        }
         return true;
     }
-
 
     public Evento crearEvento(String nombre, Date fecha, int cantBasicos, int cantMultiples, int cantDeluxe, double cargoPorcentual, double cuotaAdicional,int maxBasicos, int maxDeluxe, int maxMultiples, Venue venue) {
         
@@ -117,6 +110,7 @@ public class Organizador extends Usuario{
                 this,      
                 venue      
         );
+        
         venue.setProximoEvento(nuevoEvento);
         agregarEvento(nuevoEvento);
 
