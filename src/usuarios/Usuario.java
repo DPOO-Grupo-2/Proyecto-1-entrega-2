@@ -1,16 +1,16 @@
 package usuarios;
 
 import java.util.ArrayList;
-import tiquetes.tiquete;
+import tiquetes.Tiquete;
 
-public class usuario {
+public class Usuario {
 	
 	private String login;
     private String password;
     private double saldo;
-    private ArrayList<tiquete> tiquetesActivos;
+    private ArrayList<Tiquete> tiquetesActivos;
     
-    public usuario(String login, String password, double saldo) {
+    public Usuario(String login, String password, double saldo) {
         this.login = login;
         this.password = password;
         this.saldo = saldo;
@@ -41,19 +41,19 @@ public class usuario {
         this.saldo = saldo;
     }
     
-    public ArrayList<tiquete> getTiquetesActivos() {
+    public ArrayList<Tiquete> getTiquetesActivos() {
         return tiquetesActivos;
     }
     
-    public void setTiquetesActivos(ArrayList<tiquete> tiquetes) {
+    public void setTiquetesActivos(ArrayList<Tiquete> tiquetes) {
         this.tiquetesActivos = tiquetes;
     }
     
-    public void agregarTiquete(tiquete tiquete) {
+    public void agregarTiquete(Tiquete tiquete) {
         this.tiquetesActivos.add(tiquete);
     }
 
-    public boolean removerTiquete(tiquete tiquete) {
+    public boolean removerTiquete(Tiquete tiquete) {
         return this.tiquetesActivos.remove(tiquete);
     }
     
@@ -70,7 +70,7 @@ public class usuario {
         return this.login.equals(login) && this.password.equals(password);
     }
     
-    public void transferirTiquete(tiquete tiqueteATransferir, usuario usuarioDestino, String passwordEmisor) {
+    public void transferirTiquete(Tiquete tiqueteATransferir, Usuario usuarioDestino, String passwordEmisor) {
     	if (tiqueteATransferir == null || usuarioDestino == null) {
             System.out.println("Error: datos incompletos.");
             return;

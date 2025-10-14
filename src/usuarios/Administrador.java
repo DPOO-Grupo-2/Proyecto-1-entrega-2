@@ -3,14 +3,16 @@ package usuarios;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Administrador extends usuario {
-    
-    private double costoFijoEmision;
+import evento.Evento;
+import evento.Venue;
+
+public class Administrador extends Usuario {
+
+    protected static final int COSTOFIJOEMISION = 5000;
     private Map<String, Double> porcentajeServicioPorTipo;
 
     public Administrador(String login, String password, double saldo) {
         super(login, password, saldo);
-        this.costoFijoEmision = 5000;
         this.porcentajeServicioPorTipo = new HashMap<>();
 
         porcentajeServicioPorTipo.put("MUSICAL", 0.10);
@@ -18,15 +20,34 @@ public class Administrador extends usuario {
         porcentajeServicioPorTipo.put("DEPORTIVO", 0.12);
         porcentajeServicioPorTipo.put("RELIGIOSO", 0.05);
     }
-    
 
-    public double getCostoFijoEmision() {
-        return costoFijoEmision;
+    public int getCostoFijoEmision() {
+        return COSTOFIJOEMISION;
     }
-    
-    public void setCostoFijoEmision(double costo) {
-        this.costoFijoEmision = costo;
-        System.out.println("Costo de emisión: $" + costo);
+
+    public void setPorcentajeServicioPorTipo(Map<String, Double> mapa) {
+        this.porcentajeServicioPorTipo = mapa;
     }
-    
+
+    public Map<String, Double> getPorcentajeServicioPorTipo() {
+        return porcentajeServicioPorTipo;
+    }
+
+    public void aprobarVenue(Venue venue) {
+        if (venue != null) {
+            System.out.println("El venue " + venue.getNombre() + " ha sido aprobado.");
+            venue.setAprobado(true);  
+        } else {
+            System.out.println("Error: escribe de nuevo el nombre del venue.");
+        }
+    }
+
+    public void cancelarEvento(Evento evento) {
+        if (evento != null) {
+            System.out.println("El evento " + evento.getNombreEvento() + " ha sido cancelado.");
+            evento.setCancelado(true); 
+        } else {
+            System.out.println("Error: el evento es nulo.");
+        }
+    }
 }

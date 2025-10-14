@@ -1,38 +1,38 @@
 package tiquetes;
 
 import java.util.ArrayList;
-import evento.evento;
-import evento.localidad;
-public class tiqueteTemporada extends tiquete {
+import evento.Evento;
+import evento.Localidad;
+public class TiqueteTemporada extends Tiquete {
 	
-	private ArrayList<evento> eventosUsados= new ArrayList<evento>();
+	private ArrayList<Evento> eventosUsados= new ArrayList<Evento>();
 	public double precio;
 		
 //No se ha añadido metodo para añadir cada evento
 	
-public tiqueteTemporada(String id, boolean transferible, String silla, localidad localidad, evento evento, double precio) {
+public TiqueteTemporada(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio) {
 		super(id, transferible, silla, localidad, evento);
 		this.precio = precio;
 		
 }
 
 
-public ArrayList<evento> getEventos() {
+public ArrayList<Evento> getEventos() {
 	return eventos;
 }
 
 
-public void setEventos(ArrayList<evento> eventos) {
+public void setEventos(ArrayList<Evento> eventos) {
 	this.eventos = eventos;
 }
 
 
-public ArrayList<evento> getUsados() {
+public ArrayList<Evento> getUsados() {
 	return eventosUsados;
 }
 
 
-public void setUsados(ArrayList<evento> usados) {
+public void setUsados(ArrayList<Evento> usados) {
 	this.eventosUsados = usados;
 }
 
@@ -49,7 +49,7 @@ public int size() {
 	return this.eventos.size();
 }
 
-public void usarTiqueteTemporada(tiqueteTemporada tiquete, String nombreEvento) {
+public void usarTiqueteTemporada(TiqueteTemporada tiquete, String nombreEvento) {
 	boolean encontrado = false;
 	int i = 0;
 	int pos = 0;
@@ -65,7 +65,7 @@ public void usarTiqueteTemporada(tiqueteTemporada tiquete, String nombreEvento) 
 	}
 	
 	if(encontrado) {
-		evento event = tiquete.getEventos().remove(pos);
+		Evento event = tiquete.getEventos().remove(pos);
 		tiquete.getUsados().add(event);
 		if (tiquete.getEventos().isEmpty()) {
 			tiquete.setUsado(true);

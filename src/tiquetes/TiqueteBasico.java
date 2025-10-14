@@ -1,14 +1,14 @@
 package tiquetes;
-import evento.evento;
-import evento.localidad;
+import evento.Evento;
+import evento.Localidad;
 
 
 
-public class tiqueteBasico extends tiquete{
+public class TiqueteBasico extends Tiquete{
 	public double precioTiqueteBasico;
 	
 	
-	public tiqueteBasico(String id, boolean transferible, String silla, localidad localidad, evento evento, double precio) {
+	public TiqueteBasico(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio) {
 		super(id, transferible, silla, localidad, evento);
 		this.precioTiqueteBasico = precio;
 	}

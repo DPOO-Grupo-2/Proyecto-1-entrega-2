@@ -4,7 +4,8 @@ import usuarios.Organizador;
 import java.util.Date;
 import java.util.HashSet;
 
-public class evento {
+public class Evento {
+	
     private String nombreEvento;
     private Date fecha;
     private int cantidadTiquetesBasicos;
@@ -12,19 +13,20 @@ public class evento {
     private int cantidadTiquetesDelux;
     private double cargoPorcentual;
     private double cuotaAdicional;
+    private boolean cancelado;
 
     private int cantidadMaxTiquetesBasicos;
     private int cantidadMaxDeluxe;
     private int cantidadMaxMultiples;
 
-    private HashSet<localidad> localidades = new HashSet<>();
+    private HashSet<Localidad> localidades = new HashSet<>();
     private Organizador organizador;
-    private venue venue;
+    private Venue venue;
 
-    public evento(String nombreEvento, Date fecha, int cantidadTiquetesBasicos, int cantidadTiquetesMultiples, 
+    public Evento(String nombreEvento, Date fecha, int cantidadTiquetesBasicos, int cantidadTiquetesMultiples, 
                   int cantidadTiquetesDelux, double cargoPorcentual, double cuotaAdicional, 
                   int cantidadMaxTiquetesBasicos, int cantidadMaxDeluxe, int cantidadMaxMultiples, 
-                  Organizador organizador, venue venue) {
+                  Organizador organizador, Venue venue) {
 
         this.nombreEvento = nombreEvento;
         this.fecha = fecha;
@@ -127,19 +129,19 @@ public class evento {
         this.cantidadTiquetesDelux = cantidadTiquetesDelux;
     }
 
-    public HashSet<localidad> getLocalidades() {
+    public HashSet<Localidad> getLocalidades() {
         return localidades;
     }
 
-    public void setLocalidades(HashSet<localidad> localidades) {
+    public void setLocalidades(HashSet<Localidad> localidades) {
         this.localidades = localidades;
     }
 
-    public venue getVenue() {
+    public Venue getVenue() {
         return venue;
     }
 
-    public void setVenue(venue venue) {
+    public void setVenue(Venue venue) {
         this.venue = venue;
     }
 
@@ -150,6 +152,11 @@ public class evento {
     public void setOrganizador(Organizador organizador) {
         this.organizador = organizador;
     }
+    
+    public boolean getCancelado() {
+        return cancelado;
+    }
 
-
-}
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
+    }}

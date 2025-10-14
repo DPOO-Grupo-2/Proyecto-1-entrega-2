@@ -1,6 +1,6 @@
 package evento;
 
-public class localidad {
+public class Localidad {
 
 
 

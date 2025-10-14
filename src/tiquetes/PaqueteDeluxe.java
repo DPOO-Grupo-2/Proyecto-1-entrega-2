@@ -2,13 +2,13 @@ package tiquetes;
 
 import java.util.ArrayList;
 
-public class paqueteDeluxe {
-private ArrayList<tiquete> tiquetesCortesia = new ArrayList<tiquete>();
+public class PaqueteDeluxe {
+private ArrayList<Tiquete> tiquetesCortesia = new ArrayList<Tiquete>();
 private String beneficiosAdicionales;
 private String mercanciaAdicional;
-private tiquete tiquete;
+private Tiquete tiquete;
 
-public paqueteDeluxe(String beneficiosAdicionales, String mercanciaAdicional, tiquete tiquete) {
+public PaqueteDeluxe(String beneficiosAdicionales, String mercanciaAdicional, Tiquete tiquete) {
 	this.beneficiosAdicionales = beneficiosAdicionales;
 	this.mercanciaAdicional = mercanciaAdicional;
 	this.tiquete = tiquete;

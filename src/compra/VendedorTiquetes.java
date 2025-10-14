@@ -3,19 +3,19 @@ package compra;
 import java.util.HashSet;
 import java.util.Random;
 
-import evento.localidad;
-import evento.evento;
-import tiquetes.tiquete;
-import tiquetes.tiqueteBasico;
-import tiquetes.tiqueteTemporada;
-import tiquetes.tiqueteMultiple;
-import usuarios.usuario;
+import evento.Localidad;
+import evento.Evento;
+import tiquetes.Tiquete;
+import tiquetes.TiqueteBasico;
+import tiquetes.TiqueteTemporada;
+import tiquetes.TiqueteMultiple;
+import usuarios.Usuario;
 
-public class vendedorTiquetes {
+public class VendedorTiquetes {
     private static HashSet<String> codigos = new HashSet<>();
 
-    public static tiquete venderTiquete(String tipoTiquete, double precioBase, double cargoPorcentual, double cuotaAdicional, usuario usuario, evento evento,
-        localidad localidad1,
+    public static Tiquete venderTiquete(String tipoTiquete, double precioBase, double cargoPorcentual, double cuotaAdicional, Usuario usuario, Evento evento,
+        Localidad localidad1,
         int numeroTiquetes
     ) {
 
@@ -55,24 +55,24 @@ public class vendedorTiquetes {
             double precio = localidad1.getPrecioBasico() * (1 + evento.getCargoPorcentual());
             precio += evento.getCuotaAdicional();
            
-            return new tiqueteBasico(codigo, true, silla1, localidad1, evento, precio);
+            return new TiqueteBasico(codigo, true, silla1, localidad1, evento, precio);
 
         } else if (tipoTiquete.equalsIgnoreCase("temporada")) {
             double precio = localidad1.getPrecioTemporada() * (1 + evento.getCargoPorcentual());
             precio += evento.getCuotaAdicional();
-            return new tiqueteTemporada(codigo, true, silla1, localidad1, evento, precio);
+            return new TiqueteTemporada(codigo, true, silla1, localidad1, evento, precio);
 
         } else if (tipoTiquete.equalsIgnoreCase("multiple")) {
             double precio = localidad1.getPrecioMultiple() * (1 + evento.getCargoPorcentual());
             precio += evento.getCuotaAdicional();
             double precioMultiple = precio * numeroTiquetes;
 
-            tiqueteMultiple tiquetes = new tiqueteMultiple(
+            TiqueteMultiple tiquetes = new TiqueteMultiple(
                 codigo, true, silla1, localidad1, evento, precioMultiple, numeroTiquetes
             );
 
             for (int i = 0; i < tiquetes.getNumeroDeTiquetes(); i++) {
-                tiqueteBasico tiquete2 = new tiqueteBasico(
+                TiqueteBasico tiquete2 = new TiqueteBasico(
                     codigo, true, silla1, localidad1, evento, precio
                 );
                 tiquetes.añadirTiquete( tiquete2);

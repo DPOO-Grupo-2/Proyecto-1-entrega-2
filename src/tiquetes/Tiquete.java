@@ -2,25 +2,25 @@ package tiquetes;
 
 import java.util.ArrayList;
 
-import evento.evento;
-import evento.localidad;
-public abstract class tiquete {
+import evento.Evento;
+import evento.Localidad;
+public abstract class Tiquete {
 
 	private String id;
 	private boolean transferible;
 	public String silla;
 	protected boolean usado;
-	public localidad localidad;
-	public ArrayList<evento> eventos;
+	public Localidad localidad;
+	public ArrayList<Evento> eventos;
 	
 	
-public tiquete(String id, boolean transferible, String silla, localidad localidad, evento evento) {
+public Tiquete(String id, boolean transferible, String silla, Localidad localidad, Evento evento) {
 	this.id = id;
 	this.localidad = localidad;
 	this.silla = silla;
 	this.transferible = transferible;
 	this.usado = false;
-	this.eventos  = new ArrayList<evento>();
+	this.eventos  = new ArrayList<Evento>();
 	eventos.addLast(evento);
 }
 
@@ -46,7 +46,7 @@ public void setSilla(String silla) {
 	this.silla = silla;
 }
 
-public void setLocalidad(localidad localidad) {
+public void setLocalidad(Localidad localidad) {
 	this.localidad = localidad;
 }
 
@@ -65,7 +65,7 @@ public String getSilla() {
 }
 
 
-public localidad getLocalidad() {
+public Localidad getLocalidad() {
 	return localidad;
 }
 

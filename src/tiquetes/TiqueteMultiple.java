@@ -1,20 +1,20 @@
 package tiquetes;
-import evento.localidad;
+import evento.Localidad;
 
 import java.util.ArrayList;
 
-import evento.evento;
-public class tiqueteMultiple extends tiquete {
+import evento.Evento;
+public class TiqueteMultiple extends Tiquete {
 	public int numeroDeTiquetes;
-	public ArrayList<tiquete> tiquetes= new ArrayList<tiquete>();
-	public ArrayList<tiquete> tiquetesUsados= new ArrayList<tiquete>();
+	public ArrayList<Tiquete> tiquetes= new ArrayList<Tiquete>();
+	public ArrayList<Tiquete> tiquetesUsados= new ArrayList<Tiquete>();
 	public double precioTiqueteMultiple;
 	
 	
 	
 	
-	public tiqueteMultiple(String id, boolean transferible, String silla, localidad localidad,
-			evento evento, double precio, int numeroDeTiquetes) {
+	public TiqueteMultiple(String id, boolean transferible, String silla, Localidad localidad,
+			Evento evento, double precio, int numeroDeTiquetes) {
 		super(id, transferible, silla, localidad, evento);
 		this.numeroDeTiquetes = numeroDeTiquetes;
 		this.precioTiqueteMultiple = precio;
@@ -22,7 +22,7 @@ public class tiqueteMultiple extends tiquete {
 		
 	}
 	
-public void añadirTiquete(tiquete nuevoTiquete) {
+public void añadirTiquete(Tiquete nuevoTiquete) {
 	    this.tiquetes.add(nuevoTiquete);
 	}
 
@@ -34,12 +34,12 @@ public void setNumeroDeTiquetes(int numeroDeTiquetes) {
 	this.numeroDeTiquetes = numeroDeTiquetes;
 }
 
-public ArrayList<tiquete> getTiquetes() {
+public ArrayList<Tiquete> getTiquetes() {
 	return tiquetes;
 }
 
 
-public ArrayList<tiquete> getTiquetesUsados() {
+public ArrayList<Tiquete> getTiquetesUsados() {
 	return tiquetesUsados;
 }
 
@@ -54,7 +54,7 @@ public void setPrecioTiqueteMultiple(double precioTiqueteMultiple) {
 
 public void usarTiqueteMultiple() {
     if (!tiquetes.isEmpty()) {
-        tiquete unidad = tiquetes.remove(tiquetes.size() - 1);
+        Tiquete unidad = tiquetes.remove(tiquetes.size() - 1);
         unidad.setUsado(true);
         tiquetesUsados.add(unidad);
 
