@@ -1,6 +1,8 @@
 package evento;
 
 import usuarios.Organizador;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -20,7 +22,7 @@ public class Evento {
     private int cantidadMaxDeluxe;
     private int cantidadMaxMultiples;
 
-    private HashSet<Localidad> localidades = new HashSet<>();
+    private ArrayList<Localidad> localidades = new ArrayList<Localidad>();
     private Organizador organizador;
     private Venue venue;
 
@@ -130,11 +132,11 @@ public class Evento {
         this.cantidadTiquetesDelux = cantidadTiquetesDelux;
     }
 
-    public HashSet<Localidad> getLocalidades() {
+    public ArrayList<Localidad> getLocalidades() {
         return localidades;
     }
 
-    public void setLocalidades(HashSet<Localidad> localidades) {
+    public void setLocalidades(ArrayList<Localidad> localidades) {
         this.localidades = localidades;
     }
 

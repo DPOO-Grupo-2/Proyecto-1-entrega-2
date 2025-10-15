@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import evento.Evento;
+import evento.Localidad;
 import evento.Venue;
 
 public class Administrador extends Usuario {
@@ -24,7 +25,7 @@ public class Administrador extends Usuario {
     public int getCostoFijoEmision() {
         return COSTOFIJOEMISION;
     }
-
+    
     public void setPorcentajeServicioPorTipo(Map<String, Double> mapa) {
         this.porcentajeServicioPorTipo = mapa;
     }
@@ -69,5 +70,10 @@ public class Administrador extends Usuario {
             System.out.println("Error: el evento es nulo.");
         }
     
+    }
+    public void setOfertaLocalidad(Evento evento, double oferta) {
+        for (Localidad localidad : evento.getLocalidades()) {
+            localidad.setDescuento(oferta);
+        }
     }
 }
