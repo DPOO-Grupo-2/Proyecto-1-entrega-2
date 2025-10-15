@@ -4,6 +4,7 @@ import usuarios.Organizador;
 import java.util.Date;
 import java.util.HashSet;
 
+
 public class Evento {
 	
     private String nombreEvento;
@@ -159,4 +160,8 @@ public class Evento {
 
     public void setCancelado(boolean cancelado) {
         this.cancelado = cancelado;
-    }}
+    }
+    public void agregegarLocalidad(Localidad localidad) {
+    	this.localidades.add(localidad);
+    }    
+}
