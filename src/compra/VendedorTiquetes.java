@@ -41,7 +41,7 @@ public class VendedorTiquetes {
 
         
         	
-        	boolean enumerada = localidad1.getEnumeracion();
+        	boolean enumerada = localidad1.isTieneNumeracion();
         String silla1 = null;
 
         if (enumerada) {

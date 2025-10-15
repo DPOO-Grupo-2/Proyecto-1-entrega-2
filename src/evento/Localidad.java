@@ -1,34 +1,69 @@
 package evento;
 
 public class Localidad {
-
-
-
-
-
-	public double getPrecioLocalidad() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String nombreLocalidad;
+	public boolean tieneNumeracion;
+	public double descuento;
+	public double precioBasico;
+	public double precioDelux;
+	public double precioMultiple;
+	public double precioTemporada;
+	public String getNombreLocalidad() {
+		return nombreLocalidad;
 	}
-
-	public boolean getEnumeracion() {
-		// TODO Auto-generated method stub
-		return false;
+	public void setNombreLocalidad(String nombreLocalidad) {
+		this.nombreLocalidad = nombreLocalidad;
 	}
-
+	public boolean isTieneNumeracion() {
+		return tieneNumeracion;
+	}
+	public void setTieneNumeracion(boolean tieneNumeracion) {
+		this.tieneNumeracion = tieneNumeracion;
+	}
+	public double getDescuento() {
+		return descuento;
+	}
+	public void setDescuento(double descuento) {
+		this.descuento = descuento;
+		this.precioBasico = this.precioBasico* (1- descuento );
+		this.precioDelux = this.precioDelux* (1- descuento );
+		this.precioMultiple = this.precioMultiple* (1- descuento );
+		this.precioTemporada = this.precioTemporada* (1- descuento );
+		
+	}
 	public double getPrecioBasico() {
-		// TODO Auto-generated method stub
-		return 0;
+		return precioBasico;
 	}
-
-	public double getPrecioTemporada() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void setPrecioBasico(double precioBasico) {
+		this.precioBasico = precioBasico;
 	}
-
+	public double getPrecioDelux() {
+		return precioDelux;
+	}
+	public void setPrecioDelux(double precioDelux) {
+		this.precioDelux = precioDelux;
+	}
 	public double getPrecioMultiple() {
-		// TODO Auto-generated method stub
-		return 0;
+		return precioMultiple;
 	}
+	public void setPrecioMultiple(double precioMultiple) {
+		this.precioMultiple = precioMultiple;
+	}
+	public double getPrecioTemporada() {
+		return precioTemporada;
+	}
+	public void setPrecioTemporada(double precioTemporada) {
+		this.precioTemporada = precioTemporada;
+	}
+	
+
+
+
+
+
+
+
+
+
 
 }
