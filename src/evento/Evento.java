@@ -1,10 +1,14 @@
 package evento;
 
 import usuarios.Organizador;
+import usuarios.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+
+import compra.VendedorTiquetes;
+import tiquetes.Tiquete;
 
 
 public class Evento {
@@ -17,7 +21,7 @@ public class Evento {
     private double cargoPorcentual;
     private double cuotaAdicional;
     private boolean cancelado;
-
+    private  VendedorTiquetes vendedorEvento;
     private int cantidadMaxTiquetesBasicos;
     private int cantidadMaxDeluxe;
     private int cantidadMaxMultiples;
@@ -43,6 +47,7 @@ public class Evento {
         this.cantidadMaxMultiples = cantidadMaxMultiples;
         this.organizador = organizador;
         this.venue = venue;
+        this.vendedorEvento = new VendedorTiquetes();
     }
 
 
@@ -165,5 +170,32 @@ public class Evento {
     }
     public void agregegarLocalidad(Localidad localidad) {
     	this.localidades.add(localidad);
-    }    
+    } 
+    
+    public Tiquete venderTiquete(String tipoTiquete, Usuario usuario, Evento evento, Localidad localidad1, int numeroTiquetes) {
+    		double precio = 0;
+    		int pos = evento.getLocalidades().lastIndexOf(localidad1);
+    		if (tipoTiquete.equalsIgnoreCase("basico")) {
+    		 precio = evento.getLocalidades().get(pos).getPrecioBasico();
+    		}
+    		else if (tipoTiquete.equalsIgnoreCase("multiple")) {
+        		 precio = evento.getLocalidades().get(pos).getPrecioMultiple();
+        		}
+    		else if (tipoTiquete.equalsIgnoreCase("temporada")) {
+        		 precio = evento.getLocalidades().get(pos).getPrecioTemporada();
+        		
+        		}
+    		else if (tipoTiquete.equalsIgnoreCase("deluxe")) {
+        		 precio = evento.getLocalidades().get(pos).getPrecioDelux();
+        		}
+    		else {
+    		    throw new IllegalArgumentException("El tipo de tiquete no es válido");
+    		}
+    		
+    	Tiquete tiquete = vendedorEvento.venderTiquete(tipoTiquete, precio, evento.getCargoPorcentual(), evento.getCuotaAdicional(), usuario, this, localidad1, numeroTiquetes);
+    	
+    	return tiquete;
+    	
+    
+    }
 }

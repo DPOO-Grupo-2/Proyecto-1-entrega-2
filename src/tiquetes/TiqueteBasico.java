@@ -14,7 +14,7 @@ public class TiqueteBasico extends Tiquete{
 	}
 
 
-	public double getPrecioTiqueteBasico() {
+	public double getPrecioTiquete() {
 		return precioTiqueteBasico;
 	}
 

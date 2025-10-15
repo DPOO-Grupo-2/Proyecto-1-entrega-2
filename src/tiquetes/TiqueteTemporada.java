@@ -37,7 +37,7 @@ public void setUsados(ArrayList<Evento> usados) {
 }
 
 
-public double getPrecio() {
+public double getPrecioTiquete() {
 	return precio;
 }
 

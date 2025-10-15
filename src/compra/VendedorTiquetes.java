@@ -12,12 +12,13 @@ import tiquetes.TiqueteMultiple;
 import usuarios.Usuario;
 
 public class VendedorTiquetes {
-private static HashSet<String> codigos = new HashSet<>();
+private static HashSet<String> codigos ;
+public VendedorTiquetes() {
+	this.codigos = new HashSet<String>();
+}
 
-public static Tiquete venderTiquete(String tipoTiquete, double precioBase, double cargoPorcentual, double cuotaAdicional, Usuario usuario, Evento evento,
-Localidad localidad1,
-int numeroTiquetes
-) {
+public Tiquete venderTiquete(String tipoTiquete, double precioBase, double cargoPorcentual, double cuotaAdicional, Usuario usuario, Evento evento,
+Localidad localidad1, int numeroTiquetes) {
 
 int numero = (int) (Math.random() * 10e7);
 String codigo = "" + numero;

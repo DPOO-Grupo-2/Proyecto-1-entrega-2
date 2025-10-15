@@ -44,7 +44,7 @@ public ArrayList<Tiquete> getTiquetesUsados() {
 }
 
 
-public double getPrecioTiqueteMultiple() {
+public double getPrecioTiquete() {
 	return precioTiqueteMultiple;
 }
 

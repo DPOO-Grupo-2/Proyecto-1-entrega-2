@@ -70,6 +70,9 @@ public Localidad getLocalidad() {
 }
 
 
+public abstract double getPrecioTiquete();
+
+
 
 
 
