@@ -41,6 +41,25 @@ public class Administrador extends Usuario {
             System.out.println("Error: escribe de nuevo el nombre del venue.");
         }
     }
+    
+    public boolean aprobarCancelacionEvento(Evento evento, Organizador organizador) {
+        if (evento == null || organizador == null) {
+            return false;
+        }
+
+        if (!organizador.tieneSolicitudPendiente(evento)) {
+            return false;
+        }
+
+        if (evento.getCancelado()) {
+            return false;
+        }
+
+        evento.setCancelado(true);
+        organizador.removerSolicitudPendiente(evento);
+        return true;
+    }
+
 
     public void cancelarEvento(Evento evento) {
         if (evento != null) {
@@ -49,5 +68,6 @@ public class Administrador extends Usuario {
         } else {
             System.out.println("Error: el evento es nulo.");
         }
+    
     }
 }
