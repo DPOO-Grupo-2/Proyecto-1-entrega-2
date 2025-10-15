@@ -38,4 +38,45 @@ public class Cliente extends Usuario{
     	receptor.getTiquetesActivos().add(tiquete);
     }
 
+    public void cancelarTiquete(String codigoTiquete, String nombreEvento) {
+        ArrayList<Tiquete> tiquetesUsuario = this.tiquetesComprados;
+        boolean encontrado = false;
+        int i = 0;
+        
+        while (!encontrado && i < tiquetesUsuario.size()){
+            Tiquete tiquete = tiquetesUsuario.get(i);
+            if (tiquete.getId().equals(codigoTiquete)) {
+                encontrado = true;
+            } else {
+                i++;
+            }
+        }
+        
+        if (encontrado) {
+            Tiquete tiquete = tiquetesUsuario.get(i); 
+            ArrayList<Evento> eventos = tiquete.getEventos();
+            boolean encontrado2 = false;
+            int j = 0;
+            
+            while (!encontrado2 && j < eventos.size()) {  
+                Evento evento = eventos.get(j);
+                if (nombreEvento.equals(evento.getNombreEvento())){
+                    encontrado2 = true;
+                } else {
+                    j++; 
+                }
+            }
+            
+            if (encontrado2) {
+                Evento evento = eventos.get(j);
+                if (evento.getAdministrador().aprobarCancelacionCLiente(evento)) {
+                    tiquetesUsuario.remove(i);
+                    evento.getTiquetesVedidos().remove(tiquete);
+      
+                    this.historialTransacciones.add("Cancelación de tiquete: " + codigoTiquete);
+}
+      }
+        }
+    }
+    
 }

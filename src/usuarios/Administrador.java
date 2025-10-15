@@ -6,6 +6,7 @@ import java.util.Map;
 import evento.Evento;
 import evento.Localidad;
 import evento.Venue;
+import tiquetes.Tiquete;
 
 public class Administrador extends Usuario {
 
@@ -43,37 +44,51 @@ public class Administrador extends Usuario {
         }
     }
     
-    public boolean aprobarCancelacionEvento(Evento evento, Organizador organizador) {
-        if (evento == null || organizador == null) {
+    public boolean aprobarCancelacionEvento(Evento evento) {
+        if (evento == null ) {
             return false;
         }
 
-        if (!organizador.tieneSolicitudPendiente(evento)) {
-            return false;
-        }
 
         if (evento.getCancelado()) {
             return false;
         }
-
-        evento.setCancelado(true);
-        organizador.removerSolicitudPendiente(evento);
-        return true;
-    }
-
-
-    public void cancelarEvento(Evento evento) {
-        if (evento != null) {
-            System.out.println("El evento " + evento.getNombreEvento() + " ha sido cancelado.");
-            evento.setCancelado(true); 
-        } else {
-            System.out.println("Error: el evento es nulo.");
+        else {
+        	return true;
         }
-    
+
+
     }
+
+
+
     public void setOfertaLocalidad(Evento evento, double oferta) {
         for (Localidad localidad : evento.getLocalidades()) {
             localidad.setDescuento(oferta);
         }
     }
+    
+    
+    public void calncelarEvento(Evento evento){
+ 	   evento.setCancelado(true);
+ 	   evento.getOrganizador().getEventosActivos().remove(evento);
+ 	   for (Tiquete tiquete: evento.getTiquetesVedidos()) {
+ 		   Usuario usuario = tiquete.getUsuario();
+ 		   usuario.setSaldo(tiquete.getPrecioTiquete()-evento.getCuotaAdicional());
+ 		   //Falta arreglar finanzas de eveto 
+ 	   }
+    }
+    public void calncelarEventoOrganizador(Evento evento){
+  	   evento.setCancelado(true);
+  	   evento.getOrganizador().getEventosActivos().remove(evento);
+  	   for (Tiquete tiquete: evento.getTiquetesVedidos()) {
+  		   Usuario usuario = tiquete.getUsuario();
+  		   usuario.setSaldo(tiquete.getPrecioTiquete()-evento.getCuotaAdicional()*(1-evento.getCargoPorcentual()));
+  	   }
+    }
+
+	public boolean aprobarCancelacionCLiente(Evento evento) {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

@@ -1,11 +1,11 @@
 package evento;
 
+import usuarios.Administrador;
 import usuarios.Organizador;
 import usuarios.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 
 import compra.VendedorTiquetes;
 import tiquetes.Tiquete;
@@ -15,6 +15,7 @@ public class Evento {
 	
     private String nombreEvento;
     private Date fecha;
+    private ArrayList<Tiquete> tiquetesVedidos;
     private int cantidadTiquetesBasicos;
     private int cantidadTiquetesMultiples;
     private int cantidadTiquetesDelux;
@@ -25,7 +26,7 @@ public class Evento {
     private int cantidadMaxTiquetesBasicos;
     private int cantidadMaxDeluxe;
     private int cantidadMaxMultiples;
-
+    private Administrador administrador;
     private ArrayList<Localidad> localidades = new ArrayList<Localidad>();
     private Organizador organizador;
     private Venue venue;
@@ -33,7 +34,7 @@ public class Evento {
     public Evento(String nombreEvento, Date fecha, int cantidadTiquetesBasicos, int cantidadTiquetesMultiples, 
                   int cantidadTiquetesDelux, double cargoPorcentual, double cuotaAdicional, 
                   int cantidadMaxTiquetesBasicos, int cantidadMaxDeluxe, int cantidadMaxMultiples, 
-                  Organizador organizador, Venue venue) {
+                  Organizador organizador, Venue venue, Administrador administrador) {
 
         this.nombreEvento = nombreEvento;
         this.fecha = fecha;
@@ -48,11 +49,23 @@ public class Evento {
         this.organizador = organizador;
         this.venue = venue;
         this.vendedorEvento = new VendedorTiquetes();
+        this.tiquetesVedidos = new ArrayList<Tiquete>();
+        this.administrador = administrador;
     }
 
 
     public int getCantidadMaxTiquetesBasicos() {
 		return cantidadMaxTiquetesBasicos;
+	}
+
+
+	public Administrador getAdministrador() {
+		return administrador;
+	}
+
+
+	public void setAdministrador(Administrador administrador) {
+		this.administrador = administrador;
 	}
 
 
@@ -79,7 +92,6 @@ public class Evento {
 	public void setCantidadMaxMultiples(int cantidadMaxMultiples) {
 		this.cantidadMaxMultiples = cantidadMaxMultiples;
 	}
-
 
 	public String getNombreEvento() {
         return nombreEvento;
@@ -193,9 +205,14 @@ public class Evento {
     		}
     		
     	Tiquete tiquete = vendedorEvento.venderTiquete(tipoTiquete, precio, evento.getCargoPorcentual(), evento.getCuotaAdicional(), usuario, this, localidad1, numeroTiquetes);
-    	
+    	evento.getTiquetesVedidos().add(tiquete);
     	return tiquete;
     	
     
     }
+
+
+	public ArrayList<Tiquete> getTiquetesVedidos() {
+		return tiquetesVedidos;
+	}
 }

@@ -56,7 +56,7 @@ precio = localidad1.getPrecioBasico() * (1 + evento.getCargoPorcentual());
 precio += evento.getCuotaAdicional();
 }
 
-return new TiqueteBasico(codigo, true, silla1, localidad1, evento, precio);
+return new TiqueteBasico(codigo, true, silla1, localidad1, evento, precio,usuario);
 
 } else if (tipoTiquete.equalsIgnoreCase("temporada")) {
 double precio;
@@ -67,7 +67,7 @@ else {
 precio = localidad1.getPrecioTemporada() * (1 + evento.getCargoPorcentual());
 precio += evento.getCuotaAdicional();
 }
-return new TiqueteTemporada(codigo, true, silla1, localidad1, evento, precio);
+return new TiqueteTemporada(codigo, true, silla1, localidad1, evento, precio,usuario);
 
 } else if (tipoTiquete.equalsIgnoreCase("multiple")) {
 double precio;
@@ -81,13 +81,10 @@ precio += evento.getCuotaAdicional();
 double precioMultiple = precio * numeroTiquetes;
 
 TiqueteMultiple tiquetes = new TiqueteMultiple(
-codigo, true, silla1, localidad1, evento, precioMultiple, numeroTiquetes
-);
+codigo, true, silla1, localidad1, evento, precioMultiple, numeroTiquetes, usuario);
 
 for (int i = 0; i < tiquetes.getNumeroDeTiquetes(); i++) {
-TiqueteBasico tiquete2 = new TiqueteBasico(
-codigo, true, silla1, localidad1, evento, precio
-);
+TiqueteBasico tiquete2 = new TiqueteBasico(codigo, true, silla1, localidad1, evento, precio, usuario);
 tiquetes.añadirTiquete( tiquete2);
 }
 

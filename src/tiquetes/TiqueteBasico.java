@@ -1,6 +1,7 @@
 package tiquetes;
 import evento.Evento;
 import evento.Localidad;
+import usuarios.Usuario;
 
 
 
@@ -8,8 +9,8 @@ public class TiqueteBasico extends Tiquete{
 	public double precioTiqueteBasico;
 	
 	
-	public TiqueteBasico(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio) {
-		super(id, transferible, silla, localidad, evento);
+	public TiqueteBasico(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio, Usuario usuario) {
+		super(id, transferible, silla, localidad, evento, usuario);
 		this.precioTiqueteBasico = precio;
 	}
 

@@ -1,6 +1,8 @@
 package usuarios;
 
 import java.util.ArrayList;
+
+import evento.Evento;
 import tiquetes.Tiquete;
 
 public class Usuario {
@@ -93,6 +95,8 @@ public class Usuario {
     	usuarioDestino.agregarTiquete(tiqueteATransferir);
     	
     }
+
+
 
 }
     

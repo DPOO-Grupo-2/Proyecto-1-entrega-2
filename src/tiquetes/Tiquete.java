@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import evento.Evento;
 import evento.Localidad;
+import usuarios.Usuario;
 public abstract class Tiquete {
-
+	private Usuario usuario;
 	private String id;
 	private boolean transferible;
 	public String silla;
@@ -14,14 +15,35 @@ public abstract class Tiquete {
 	public ArrayList<Evento> eventos;
 	
 	
-public Tiquete(String id, boolean transferible, String silla, Localidad localidad, Evento evento) {
+public Tiquete(String id, boolean transferible, String silla, Localidad localidad, Evento evento, Usuario usuario) {
 	this.id = id;
 	this.localidad = localidad;
 	this.silla = silla;
 	this.transferible = transferible;
 	this.usado = false;
 	this.eventos  = new ArrayList<Evento>();
+	this.usuario = usuario;
 	eventos.addLast(evento);
+}
+
+
+public ArrayList<Evento> getEventos() {
+	return eventos;
+}
+
+
+public void setEventos(ArrayList<Evento> eventos) {
+	this.eventos = eventos;
+}
+
+
+public Usuario getUsuario() {
+	return usuario;
+}
+
+
+public void setUsuario(Usuario usuario) {
+	this.usuario = usuario;
 }
 
 

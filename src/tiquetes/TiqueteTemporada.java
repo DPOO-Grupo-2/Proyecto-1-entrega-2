@@ -3,6 +3,7 @@ package tiquetes;
 import java.util.ArrayList;
 import evento.Evento;
 import evento.Localidad;
+import usuarios.Usuario;
 public class TiqueteTemporada extends Tiquete {
 	
 	private ArrayList<Evento> eventosUsados= new ArrayList<Evento>();
@@ -10,8 +11,8 @@ public class TiqueteTemporada extends Tiquete {
 		
 //No se ha añadido metodo para añadir cada evento
 	
-public TiqueteTemporada(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio) {
-		super(id, transferible, silla, localidad, evento);
+public TiqueteTemporada(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio, Usuario usuario) {
+		super(id, transferible, silla, localidad, evento, usuario);
 		this.precio = precio;
 		
 }

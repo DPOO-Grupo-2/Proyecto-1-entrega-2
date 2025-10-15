@@ -179,7 +179,7 @@ public class Organizador extends Usuario{
                 maxDeluxe,
                 maxMultiples,
                 this,      
-                venue      
+                venue, new Administrador( "ADMIN",  "ADMIN1",  0)      
         );
         
         venue.setProximoEvento(nuevoEvento);
@@ -228,6 +228,21 @@ public class Organizador extends Usuario{
 
         return nuevaOferta;
     }
+   
+    
+    public void solicitarCancelacionEvento(Evento evento) {
+    	if (!evento.getCancelado()) {
+    		evento.setCancelado(true);
+    		evento.getAdministrador().calncelarEventoOrganizador(evento);
+    		
+    		
+    		
+    	}
+    	
+    }
+    
+    
+    
     
 }
     

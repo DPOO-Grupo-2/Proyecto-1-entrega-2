@@ -1,5 +1,6 @@
 package tiquetes;
 import evento.Localidad;
+import usuarios.Usuario;
 
 import java.util.ArrayList;
 
@@ -14,8 +15,8 @@ public class TiqueteMultiple extends Tiquete {
 	
 	
 	public TiqueteMultiple(String id, boolean transferible, String silla, Localidad localidad,
-			Evento evento, double precio, int numeroDeTiquetes) {
-		super(id, transferible, silla, localidad, evento);
+			Evento evento, double precio, int numeroDeTiquetes, Usuario usuario) {
+		super(id, transferible, silla, localidad, evento, usuario);
 		this.numeroDeTiquetes = numeroDeTiquetes;
 		this.precioTiqueteMultiple = precio;
 		
