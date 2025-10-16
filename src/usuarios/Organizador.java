@@ -8,10 +8,11 @@ import evento.Evento;
 import evento.Localidad;
 import evento.Oferta;
 import evento.Venue;
+import tiquetes.Tiquete;
 
-public class Organizador extends Usuario{
-	
-	private ArrayList<Evento> eventosCreados = new ArrayList<Evento>();
+public class Organizador extends Usuario {
+    
+    private ArrayList<Evento> eventosCreados = new ArrayList<Evento>();
     private ArrayList<Evento> solicitudesPendientes = new ArrayList<>();
 
     public Organizador(String login, String password, double saldo) {
@@ -80,6 +81,11 @@ public class Organizador extends Usuario{
         }
 
         solicitudesPendientes.add(evento);
+        
+        if (evento.getAdministrador() != null) {
+            evento.getAdministrador().agregarSolicitudCancelacion(evento);
+        }
+        
         return true;
     }
     
@@ -114,7 +120,9 @@ public class Organizador extends Usuario{
         }
     }
 
-    public Evento crearEvento(String nombre, Date fecha, int cantBasicos, int cantMultiples, int cantDeluxe, double cargoPorcentual, double cuotaAdicional, int maxBasicos, int maxDeluxe, int maxMultiples, Venue venue) {
+    public Evento crearEvento(String nombre, Date fecha, int cantBasicos, int cantMultiples, int cantDeluxe, 
+                              double cargoPorcentual, double cuotaAdicional, int maxBasicos, int maxDeluxe, 
+                              int maxMultiples, Venue venue) {
         
         if (venue == null) {
             System.err.println("Error: venue nulo.");
@@ -143,7 +151,6 @@ public class Organizador extends Usuario{
         
         if (cantBasicos > maxBasicos || cantMultiples > maxMultiples || cantDeluxe > maxDeluxe) {
             System.err.println("Error: las cantidades iniciales superan los máximos permitidos.");
-          
             return null;
         }
         
@@ -179,7 +186,8 @@ public class Organizador extends Usuario{
                 maxDeluxe,
                 maxMultiples,
                 this,      
-                venue, new Administrador( "ADMIN",  "ADMIN1",  0)      
+                venue, 
+                new Administrador("ADMIN", "ADMIN1", 0)
         );
         
         venue.setProximoEvento(nuevoEvento);
@@ -188,61 +196,146 @@ public class Organizador extends Usuario{
         return nuevoEvento;
     }
 
-    public Oferta crearOferta(Evento evento, Localidad localidad, double descuento, Date fechaInicio, Date fechaFin) {
-    	if (evento == null || localidad == null) {
+    public void crearOferta(Evento evento, Localidad localidad, double descuento, Date fechaInicio, Date fechaFin) {
+        if (evento == null || localidad == null) {
             System.err.println("Error: evento o localidad nulos.");
-            return null;
+            return;
         }
 
         if (!eventosCreados.contains(evento)) {
             System.err.println("Error: no eres dueño de este evento.");
-            return null;
+            return;
         }
 
         if (!evento.getLocalidades().contains(localidad)) {
             System.err.println("Error: la localidad no pertenece a este evento.");
-            return null;
+            return;
         }
 
         if (descuento <= 0 || descuento > 100) {
             System.err.println("Error: el descuento debe estar entre 0 y 100.");
-            return null;
+            return;
         }
 
         if (fechaInicio == null || fechaFin == null) {
             System.err.println("Error: las fechas no pueden ser nulas.");
-            return null;
+            return;
         }
 
         if (fechaInicio.after(fechaFin)) {
             System.err.println("Error: la fecha de inicio debe ser anterior a la fecha fin.");
-            return null;
+            return;
         }
 
         if (fechaFin.after(evento.getFecha())) {
             System.err.println("Error: la oferta no puede extenderse más allá de la fecha del evento.");
-            return null;
+            return;
         }
 
         Oferta nuevaOferta = new Oferta(evento, localidad, descuento, fechaInicio, fechaFin);
+        localidad.agregarOferta(nuevaOferta);
+    }
 
-        return nuevaOferta;
+    public void sugerirVenue(Venue venue) {
+        if (venue == null) {
+            System.err.println("Error: venue nulo.");
+            return;
+        }
+        venue.setAprobado(false);
     }
-   
-    
-    public void solicitarCancelacionEvento(Evento evento) {
-    	if (!evento.getCancelado()) {
-    		evento.setCancelado(true);
-    		evento.getAdministrador().calncelarEventoOrganizador(evento);
-    		
-    		
-    		
-    	}
-    	
+
+    public double consultarGananciasTotales() {
+        double total = 0.0;
+        for (int i = 0; i < eventosCreados.size(); i++) {
+            Evento e = eventosCreados.get(i);
+            if (e != null && !e.getCancelado()) {
+                total += consultarGananciasPorEvento(e);
+            }
+        }
+        return total;
     }
-    
-    
-    
-    
+
+    public double consultarGananciasPorEvento(Evento evento) {
+        if (evento == null || evento.getCancelado()) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        for (Localidad loc : evento.getLocalidades()) {
+            total += consultarGananciasPorLocalidad(evento, loc);
+        }
+        return total;
+    }
+
+    public double consultarGananciasPorLocalidad(Evento evento, Localidad localidad) {
+        if (evento == null || localidad == null) {
+            return 0.0;
+        }
+        if (!evento.getLocalidades().contains(localidad)) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
+        
+        for (int i = 0; i < tiquetesVendidos.size(); i++) {
+            Tiquete t = tiquetesVendidos.get(i);
+            if (t != null && t.getLocalidad() != null && t.getLocalidad().equals(localidad)) {
+                double precioTotal = t.getPrecio();
+                double cargoPorcentual = evento.getCargoPorcentual();
+                double cuotaAdicional = evento.getCuotaAdicional();
+                int costoEmision = evento.getAdministrador() != null ? 
+                                   evento.getAdministrador().getCostoFijoEmision() : 0;
+                
+                double precioBase = (precioTotal - cuotaAdicional - costoEmision) / (1 + cargoPorcentual / 100.0);
+                
+                if (precioBase > 0) {
+                    total += precioBase;
+                }
+            }
+        }
+        
+        return total;
+    }
+
+    public double calcularPorcentajeVentas(Evento evento) {
+        if (evento == null || evento.getVenue() == null) {
+            return 0.0;
+        }
+
+        int vendidos = evento.getTiquetesVendidos().size();
+        int capacidad = evento.getVenue().getCapacidad();
+        
+        if (capacidad == 0) {
+            return 0.0;
+        }
+        
+        return (vendidos * 100.0) / capacidad;
+    }
+
+    public void comprarTiqueteComoCortesia(Evento evento, Localidad localidad, int cantidad) {
+        if (evento == null || localidad == null) {
+            System.err.println("Error: datos nulos.");
+            return;
+        }
+        if (cantidad <= 0) {
+            System.err.println("Error: cantidad inválida.");
+            return;
+        }
+        if (!eventosCreados.contains(evento)) {
+            System.err.println("Error: no eres dueño de este evento.");
+            return;
+        }
+        if (!evento.getLocalidades().contains(localidad)) {
+            System.err.println("Error: la localidad no pertenece a este evento.");
+            return;
+        }
+        
+        for (int i = 0; i < cantidad; i++) {
+            Tiquete tiquete = evento.venderTiquete("basico", this, evento, localidad, 1);
+            if (tiquete != null) {
+                this.agregarTiquete(tiquete);
+            }
+        }
+    }
 }
-    

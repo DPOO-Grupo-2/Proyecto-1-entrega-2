@@ -1,6 +1,9 @@
 package usuarios;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import evento.Evento;
@@ -12,83 +15,298 @@ public class Administrador extends Usuario {
 
     protected static final int COSTOFIJOEMISION = 5000;
     private Map<String, Double> porcentajeServicioPorTipo;
+    private List<Evento> solicitudesCancelacion;
 
     public Administrador(String login, String password, double saldo) {
         super(login, password, saldo);
         this.porcentajeServicioPorTipo = new HashMap<>();
+        this.solicitudesCancelacion = new ArrayList<>();
 
-        porcentajeServicioPorTipo.put("MUSICAL", 0.10);
-        porcentajeServicioPorTipo.put("CULTURAL", 0.08);
-        porcentajeServicioPorTipo.put("DEPORTIVO", 0.12);
-        porcentajeServicioPorTipo.put("RELIGIOSO", 0.05);
+        porcentajeServicioPorTipo.put("MUSICAL", 10.0);
+        porcentajeServicioPorTipo.put("CULTURAL", 8.0);
+        porcentajeServicioPorTipo.put("DEPORTIVO", 12.0);
+        porcentajeServicioPorTipo.put("RELIGIOSO", 5.0);
+        porcentajeServicioPorTipo.put("GENERAL", 10.0);
     }
 
     public int getCostoFijoEmision() {
         return COSTOFIJOEMISION;
     }
-    
+
     public void setPorcentajeServicioPorTipo(Map<String, Double> mapa) {
-        this.porcentajeServicioPorTipo = mapa;
+        if (mapa == null) {
+            System.err.println("Error: el mapa no puede ser nulo.");
+            return;
+        }
+        this.porcentajeServicioPorTipo = new HashMap<>(mapa);
     }
 
     public Map<String, Double> getPorcentajeServicioPorTipo() {
-        return porcentajeServicioPorTipo;
+        return new HashMap<>(porcentajeServicioPorTipo);
+    }
+
+    public void definirPorcentajeServicio(String tipoEvento, double porcentaje) {
+        if (tipoEvento == null || tipoEvento.trim().equals("")) {
+            System.err.println("Error: tipo de evento inválido.");
+            return;
+        }
+        if (porcentaje < 0 || porcentaje > 100) {
+            System.err.println("Error: porcentaje inválido.");
+            return;
+        }
+        porcentajeServicioPorTipo.put(tipoEvento.toUpperCase(), porcentaje);
+        System.out.println("Porcentaje de servicio para '" + tipoEvento + "' establecido en " + porcentaje + "%");
+    }
+
+    public double getPorcentajeServicio(String tipoEvento) {
+        if (tipoEvento == null || tipoEvento.trim().equals("")) {
+            return 0.0;
+        }
+        String tipo = tipoEvento.toUpperCase();
+        return porcentajeServicioPorTipo.getOrDefault(tipo, 0.0);
     }
 
     public void aprobarVenue(Venue venue) {
         if (venue != null) {
-            System.out.println("El venue " + venue.getNombre() + " ha sido aprobado.");
-            venue.setAprobado(true);  
+            venue.setAprobado(true);
         } else {
-            System.out.println("Error: escribe de nuevo el nombre del venue.");
+            System.err.println("Error: venue nulo.");
         }
     }
-    
-    public boolean aprobarCancelacionEvento(Evento evento) {
-        if (evento == null ) {
-            return false;
+
+    public void agregarSolicitudCancelacion(Evento evento) {
+        if (evento == null) {
+            System.err.println("Error: evento nulo.");
+            return;
+        }
+        if (!solicitudesCancelacion.contains(evento)) {
+            solicitudesCancelacion.add(evento);
+        }
+    }
+
+    public List<Evento> revisarSolicitudesCancelacion() {
+        return new ArrayList<>(solicitudesCancelacion);
+    }
+
+    public void autorizarCancelacionOrganizador(Evento evento) {
+        if (evento == null) {
+            System.err.println("Error: evento nulo.");
+            return;
+        }
+        
+        if (evento.getCancelado()) {
+            System.err.println("Error: el evento ya está cancelado.");
+            return;
+        }
+        
+        if (!solicitudesCancelacion.contains(evento)) {
+            System.err.println("Error: no existe solicitud de cancelación para este evento.");
+            return;
         }
 
+        cancelarEventoOrganizador(evento);
+        solicitudesCancelacion.remove(evento);
+    }
+
+    public void cancelarEvento(Evento evento) {
+        if (evento == null) {
+            System.err.println("Error: evento nulo.");
+            return;
+        }
 
         if (evento.getCancelado()) {
+            System.err.println("Error: el evento ya está cancelado.");
+            return;
+        }
+
+        evento.setCancelado(true);
+        evento.getOrganizador().removerEvento(evento);
+
+        ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
+        for (int i = 0; i < tiquetesVendidos.size(); i++) {
+            Tiquete tiquete = tiquetesVendidos.get(i);
+            if (tiquete != null) {
+                Usuario usuario = tiquete.getUsuario();
+                if (usuario != null) {
+                    double reembolso = tiquete.getPrecio() - COSTOFIJOEMISION;
+                    if (reembolso > 0) {
+                        usuario.actualizarSaldo(reembolso);
+                    }
+                }
+            }
+        }
+    }
+
+    public void cancelarEventoOrganizador(Evento evento) {
+        if (evento == null) {
+            System.err.println("Error: evento nulo.");
+            return;
+        }
+
+        if (evento.getCancelado()) {
+            System.err.println("Error: el evento ya está cancelado.");
+            return;
+        }
+
+        evento.setCancelado(true);
+        evento.getOrganizador().removerEvento(evento);
+
+        ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
+        for (int i = 0; i < tiquetesVendidos.size(); i++) {
+            Tiquete tiquete = tiquetesVendidos.get(i);
+            if (tiquete != null) {
+                Usuario usuario = tiquete.getUsuario();
+                if (usuario != null) {
+                	
+                    double precioTotal = tiquete.getPrecio();
+                    double cargoPorcentual = evento.getCargoPorcentual();
+                    double cuotaAdicional = evento.getCuotaAdicional();
+                    
+                    double precioBase = (precioTotal - cuotaAdicional - COSTOFIJOEMISION) / (1 + cargoPorcentual / 100.0);
+                    
+                    if (precioBase > 0) {
+                        usuario.actualizarSaldo(precioBase);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean Reembolso(Usuario usuario, Tiquete tiquete) {
+        if (usuario == null || tiquete == null) {
+            System.err.println("Error: usuario o tiquete nulos.");
             return false;
         }
-        else {
-        	return true;
+
+        if (!usuario.getTiquetesActivos().contains(tiquete)) {
+            System.err.println("Error: el tiquete no pertenece al usuario.");
+            return false;
         }
 
+        if (tiquete.isUsado()) {
+            System.err.println("Error: no se puede reembolsar un tiquete ya usado.");
+            return false;
+        }
 
+        double montoReembolso = tiquete.getPrecio() - COSTOFIJOEMISION;
+        if (montoReembolso < 0) {
+            montoReembolso = 0;
+        }
+
+        usuario.actualizarSaldo(montoReembolso);
+        usuario.removerTiquete(tiquete);
+
+        return true;
     }
-
-
 
     public void setOfertaLocalidad(Evento evento, double oferta) {
+        if (evento == null) {
+            System.err.println("Error: evento nulo.");
+            return;
+        }
+        
+        if (oferta < 0 || oferta > 100) {
+            System.err.println("Error: el descuento debe estar entre 0 y 100.");
+            return;
+        }
+
         for (Localidad localidad : evento.getLocalidades()) {
-            localidad.setDescuento(oferta);
+            if (localidad != null) {
+                localidad.setDescuento(oferta);
+            }
         }
     }
-    
-    
-    public void calncelarEvento(Evento evento){
- 	   evento.setCancelado(true);
- 	   evento.getOrganizador().getEventosActivos().remove(evento);
- 	   for (Tiquete tiquete: evento.getTiquetesVedidos()) {
- 		   Usuario usuario = tiquete.getUsuario();
- 		   usuario.setSaldo(tiquete.getPrecioTiquete()-evento.getCuotaAdicional());
- 		   //Falta arreglar finanzas de eveto 
- 	   }
-    }
-    public void calncelarEventoOrganizador(Evento evento){
-  	   evento.setCancelado(true);
-  	   evento.getOrganizador().getEventosActivos().remove(evento);
-  	   for (Tiquete tiquete: evento.getTiquetesVedidos()) {
-  		   Usuario usuario = tiquete.getUsuario();
-  		   usuario.setSaldo(tiquete.getPrecioTiquete()-evento.getCuotaAdicional()*(1-evento.getCargoPorcentual()));
-  	   }
+
+    public double consultarGananciasGenerales() {
+        double total = 0.0;
+        List<Evento> eventos = Evento.getTodosLosEventos();
+        
+        for (int i = 0; i < eventos.size(); i++) {
+            Evento evento = eventos.get(i);
+            if (evento != null && !evento.getCancelado()) {
+                total += consultarGananciasPorEvento(evento);
+            }
+        }
+        return total;
     }
 
-	public boolean aprobarCancelacionCLiente(Evento evento) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    public double consultarGananciasPorFecha(Date fecha) {
+        if (fecha == null) {
+            System.err.println("Error: fecha nula.");
+            return 0.0;
+        }
+        
+        double total = 0.0;
+        List<Evento> eventos = Evento.getTodosLosEventos();
+        
+        for (int i = 0; i < eventos.size(); i++) {
+            Evento evento = eventos.get(i);
+            if (evento != null && !evento.getCancelado()) {
+                if (sonMismoDia(fecha, evento.getFecha())) {
+                    total += consultarGananciasPorEvento(evento);
+                }
+            }
+        }
+        
+        return total;
+    }
+
+    private boolean sonMismoDia(Date fecha1, Date fecha2) {
+        if (fecha1 == null || fecha2 == null) {
+            return false;
+        }
+        
+        java.util.Calendar cal1 = java.util.Calendar.getInstance();
+        java.util.Calendar cal2 = java.util.Calendar.getInstance();
+        cal1.setTime(fecha1);
+        cal2.setTime(fecha2);
+        
+        return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
+               cal1.get(java.util.Calendar.MONTH) == cal2.get(java.util.Calendar.MONTH) &&
+               cal1.get(java.util.Calendar.DAY_OF_MONTH) == cal2.get(java.util.Calendar.DAY_OF_MONTH);
+    }
+
+    public double consultarGananciasPorEvento(Evento evento) {
+        if (evento == null) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
+        
+        for (int i = 0; i < tiquetesVendidos.size(); i++) {
+            Tiquete tiquete = tiquetesVendidos.get(i);
+            if (tiquete != null) {
+            	
+                double precioTotal = tiquete.getPrecio();
+                double cargoPorcentual = evento.getCargoPorcentual();
+                double cuotaAdicional = evento.getCuotaAdicional();
+                
+                double precioBase = (precioTotal - cuotaAdicional - COSTOFIJOEMISION) / (1 + cargoPorcentual / 100.0);
+                double sobrecargo = precioBase * (cargoPorcentual / 100.0);
+                
+                total += sobrecargo + COSTOFIJOEMISION;
+            }
+        }
+
+        return total;
+    }
+
+    public double consultarGananciasPorOrganizador(Organizador organizador) {
+        if (organizador == null) {
+            return 0.0;
+        }
+
+        double total = 0.0;
+        List<Evento> eventos = organizador.getEventosCreados();
+
+        for (int i = 0; i < eventos.size(); i++) {
+            Evento e = eventos.get(i);
+            if (e != null && !e.getCancelado()) {
+                total += consultarGananciasPorEvento(e);
+            }
+        }
+
+        return total;
+    }
 }

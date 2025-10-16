@@ -6,30 +6,35 @@ import usuarios.Usuario;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import compra.VendedorTiquetes;
 import tiquetes.Tiquete;
 
-
 public class Evento {
-	
+    
     private String nombreEvento;
     private Date fecha;
-    private ArrayList<Tiquete> tiquetesVedidos;
+    private String hora;
+    private ArrayList<Tiquete> tiquetesVendidos;
     private int cantidadTiquetesBasicos;
     private int cantidadTiquetesMultiples;
     private int cantidadTiquetesDelux;
     private double cargoPorcentual;
     private double cuotaAdicional;
     private boolean cancelado;
-    private  VendedorTiquetes vendedorEvento;
+    private VendedorTiquetes vendedorEvento;
     private int cantidadMaxTiquetesBasicos;
     private int cantidadMaxDeluxe;
     private int cantidadMaxMultiples;
+    private int maxTiquetesPorTransaccion;
     private Administrador administrador;
-    private ArrayList<Localidad> localidades = new ArrayList<Localidad>();
+    private HashSet<Localidad> localidades;
     private Organizador organizador;
     private Venue venue;
+    private String tipoEvento;
+    private static List<Evento> todosLosEventos = new ArrayList<>();
 
     public Evento(String nombreEvento, Date fecha, int cantidadTiquetesBasicos, int cantidadTiquetesMultiples, 
                   int cantidadTiquetesDelux, double cargoPorcentual, double cuotaAdicional, 
@@ -38,6 +43,7 @@ public class Evento {
 
         this.nombreEvento = nombreEvento;
         this.fecha = fecha;
+        this.hora = "00:00";
         this.cantidadTiquetesBasicos = cantidadTiquetesBasicos;
         this.cantidadTiquetesMultiples = cantidadTiquetesMultiples;
         this.cantidadTiquetesDelux = cantidadTiquetesDelux;
@@ -46,54 +52,38 @@ public class Evento {
         this.cantidadMaxTiquetesBasicos = cantidadMaxTiquetesBasicos;
         this.cantidadMaxDeluxe = cantidadMaxDeluxe;
         this.cantidadMaxMultiples = cantidadMaxMultiples;
+        this.maxTiquetesPorTransaccion = 10;
         this.organizador = organizador;
         this.venue = venue;
         this.vendedorEvento = new VendedorTiquetes();
-        this.tiquetesVedidos = new ArrayList<Tiquete>();
+        this.tiquetesVendidos = new ArrayList<Tiquete>();
         this.administrador = administrador;
+        this.localidades = new HashSet<Localidad>();
+        this.cancelado = false;
+        this.tipoEvento = "GENERAL";
+        
+        todosLosEventos.add(this);
+        
+    }
+
+    public Evento(String nombreEvento, Date fecha, String hora, Organizador organizador, Venue venue, int maxPorTransaccion) {
+        this.nombreEvento = nombreEvento;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.organizador = organizador;
+        this.venue = venue;
+        this.maxTiquetesPorTransaccion = maxPorTransaccion;
+        this.vendedorEvento = new VendedorTiquetes();
+        this.tiquetesVendidos = new ArrayList<Tiquete>();
+        this.localidades = new HashSet<Localidad>();
+        this.cancelado = false;
+        this.cargoPorcentual = 0.0;
+        this.cuotaAdicional = 0.0;
+        this.tipoEvento = "GENERAL";
     }
 
 
-    public int getCantidadMaxTiquetesBasicos() {
-		return cantidadMaxTiquetesBasicos;
-	}
-
-
-	public Administrador getAdministrador() {
-		return administrador;
-	}
-
-
-	public void setAdministrador(Administrador administrador) {
-		this.administrador = administrador;
-	}
-
-
-	public void setCantidadMaxTiquetesBasicos(int cantidadMaxTiquetesBasicos) {
-		this.cantidadMaxTiquetesBasicos = cantidadMaxTiquetesBasicos;
-	}
-
-
-	public int getCantidadMaxDeluxe() {
-		return cantidadMaxDeluxe;
-	}
-
-
-	public void setCantidadMaxDeluxe(int cantidadMaxDeluxe) {
-		this.cantidadMaxDeluxe = cantidadMaxDeluxe;
-	}
-
-
-	public int getCantidadMaxMultiples() {
-		return cantidadMaxMultiples;
-	}
-
-
-	public void setCantidadMaxMultiples(int cantidadMaxMultiples) {
-		this.cantidadMaxMultiples = cantidadMaxMultiples;
-	}
-
-	public String getNombreEvento() {
+    public String getNombreEvento() {
         return nombreEvento;
     }
 
@@ -107,6 +97,14 @@ public class Evento {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public double getCargoPorcentual() {
@@ -149,11 +147,43 @@ public class Evento {
         this.cantidadTiquetesDelux = cantidadTiquetesDelux;
     }
 
-    public ArrayList<Localidad> getLocalidades() {
+    public int getCantidadMaxTiquetesBasicos() {
+        return cantidadMaxTiquetesBasicos;
+    }
+
+    public void setCantidadMaxTiquetesBasicos(int cantidadMaxTiquetesBasicos) {
+        this.cantidadMaxTiquetesBasicos = cantidadMaxTiquetesBasicos;
+    }
+
+    public int getCantidadMaxDeluxe() {
+        return cantidadMaxDeluxe;
+    }
+
+    public void setCantidadMaxDeluxe(int cantidadMaxDeluxe) {
+        this.cantidadMaxDeluxe = cantidadMaxDeluxe;
+    }
+
+    public int getCantidadMaxMultiples() {
+        return cantidadMaxMultiples;
+    }
+
+    public void setCantidadMaxMultiples(int cantidadMaxMultiples) {
+        this.cantidadMaxMultiples = cantidadMaxMultiples;
+    }
+
+    public int getMaxTiquetesPorTransaccion() {
+        return maxTiquetesPorTransaccion;
+    }
+
+    public void setMaxTiquetesPorTransaccion(int maxTiquetesPorTransaccion) {
+        this.maxTiquetesPorTransaccion = maxTiquetesPorTransaccion;
+    }
+
+    public HashSet<Localidad> getLocalidades() {
         return localidades;
     }
 
-    public void setLocalidades(ArrayList<Localidad> localidades) {
+    public void setLocalidades(HashSet<Localidad> localidades) {
         this.localidades = localidades;
     }
 
@@ -172,7 +202,7 @@ public class Evento {
     public void setOrganizador(Organizador organizador) {
         this.organizador = organizador;
     }
-    
+
     public boolean getCancelado() {
         return cancelado;
     }
@@ -180,39 +210,112 @@ public class Evento {
     public void setCancelado(boolean cancelado) {
         this.cancelado = cancelado;
     }
-    public void agregegarLocalidad(Localidad localidad) {
-    	this.localidades.add(localidad);
-    } 
-    
-    public Tiquete venderTiquete(String tipoTiquete, Usuario usuario, Evento evento, Localidad localidad1, int numeroTiquetes) {
-    		double precio = 0;
-    		int pos = evento.getLocalidades().lastIndexOf(localidad1);
-    		if (tipoTiquete.equalsIgnoreCase("basico")) {
-    		 precio = evento.getLocalidades().get(pos).getPrecioBasico();
-    		}
-    		else if (tipoTiquete.equalsIgnoreCase("multiple")) {
-        		 precio = evento.getLocalidades().get(pos).getPrecioMultiple();
-        		}
-    		else if (tipoTiquete.equalsIgnoreCase("temporada")) {
-        		 precio = evento.getLocalidades().get(pos).getPrecioTemporada();
-        		
-        		}
-    		else if (tipoTiquete.equalsIgnoreCase("deluxe")) {
-        		 precio = evento.getLocalidades().get(pos).getPrecioDelux();
-        		}
-    		else {
-    		    throw new IllegalArgumentException("El tipo de tiquete no es válido");
-    		}
-    		
-    	Tiquete tiquete = vendedorEvento.venderTiquete(tipoTiquete, precio, evento.getCargoPorcentual(), evento.getCuotaAdicional(), usuario, this, localidad1, numeroTiquetes);
-    	evento.getTiquetesVedidos().add(tiquete);
-    	return tiquete;
-    	
-    
+
+    public Administrador getAdministrador() {
+        return administrador;
     }
 
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
+    }
 
-	public ArrayList<Tiquete> getTiquetesVedidos() {
-		return tiquetesVedidos;
-	}
+    public ArrayList<Tiquete> getTiquetesVendidos() {
+        return tiquetesVendidos;
+    }
+
+    public void setTiquetesVendidos(ArrayList<Tiquete> tiquetesVendidos) {
+        this.tiquetesVendidos = tiquetesVendidos;
+    }
+
+    public VendedorTiquetes getVendedorEvento() {
+        return vendedorEvento;
+    }
+
+    public void setVendedorEvento(VendedorTiquetes vendedorEvento) {
+        this.vendedorEvento = vendedorEvento;
+    }
+
+    public String getTipoEvento() {
+        return tipoEvento;
+    }
+
+    public void setTipoEvento(String tipoEvento) {
+        this.tipoEvento = tipoEvento;
+    }
+
+    public void agregarLocalidad(Localidad localidad) {
+        if (localidad != null) {
+            this.localidades.add(localidad);
+        }
+    }
+
+    public void removerLocalidad(Localidad localidad) {
+        if (localidad != null) {
+            this.localidades.remove(localidad);
+        }
+    }
+
+    public Tiquete venderTiquete(String tipoTiquete, Usuario usuario, Evento evento, Localidad localidad, int numeroTiquetes) {
+        if (tipoTiquete == null || usuario == null || localidad == null) {
+            System.err.println("Error: datos nulos.");
+            return null;
+        }
+
+        if (!this.localidades.contains(localidad)) {
+            System.err.println("Error: la localidad no pertenece a este evento.");
+            return null;
+        }
+
+        double precio = 0;
+
+        if (tipoTiquete.equalsIgnoreCase("basico")) {
+            precio = localidad.getPrecioBasico();
+        } else if (tipoTiquete.equalsIgnoreCase("multiple")) {
+            precio = localidad.getPrecioMultiple();
+        } else if (tipoTiquete.equalsIgnoreCase("temporada")) {
+            precio = localidad.getPrecioTemporada();
+        } else if (tipoTiquete.equalsIgnoreCase("deluxe")) {
+            precio = localidad.getPrecioDelux();
+        } else {
+            System.err.println("Error: el tipo de tiquete no es válido.");
+            return null;
+        }
+
+        Tiquete tiquete = vendedorEvento.venderTiquete(
+            tipoTiquete, 
+            precio, 
+            this.cargoPorcentual, 
+            this.cuotaAdicional, 
+            usuario, 
+            this, 
+            localidad, 
+            numeroTiquetes
+        );
+
+        if (tiquete != null) {
+            this.tiquetesVendidos.add(tiquete);
+        }
+
+        return tiquete;
+    }
+
+    public boolean validarFecha() {
+        if (fecha == null) {
+            return false;
+        }
+        Date ahora = new Date();
+        return !fecha.before(ahora);
+    }
+
+    public boolean estaVencido() {
+        if (fecha == null) {
+            return true;
+        }
+        Date ahora = new Date();
+        return fecha.before(ahora);
+    }
+    
+    public static List<Evento> getTodosLosEventos() {
+        return new ArrayList<>(todosLosEventos);
+    }
 }

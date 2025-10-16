@@ -1,5 +1,7 @@
 package evento;
 
+import java.util.ArrayList;
+
 public class Localidad {
 	public String nombreLocalidad;
 	public boolean tieneNumeracion;
@@ -8,6 +10,9 @@ public class Localidad {
 	public double precioDelux;
 	public double precioMultiple;
 	public double precioTemporada;
+	
+	private ArrayList<Oferta> ofertas = new ArrayList<Oferta>();
+	 
 	public String getNombreLocalidad() {
 		return nombreLocalidad;
 	}
@@ -55,7 +60,20 @@ public class Localidad {
 	public void setPrecioTemporada(double precioTemporada) {
 		this.precioTemporada = precioTemporada;
 	}
-	
+	public void agregarOferta(Oferta oferta) {
+        if (oferta != null) {
+            ofertas.add(oferta);
+        }
+    }
+	public void removerOferta(Oferta oferta) {
+        if (oferta != null) {
+            ofertas.remove(oferta);
+        }
+    }   
+    public ArrayList<Oferta> getOfertas() {
+        return new ArrayList<Oferta>(ofertas);
+    }
+    
 
 
 
