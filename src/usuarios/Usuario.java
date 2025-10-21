@@ -2,12 +2,11 @@ package usuarios;
 
 import java.util.ArrayList;
 
-import evento.Evento;
 import tiquetes.Tiquete;
 
 public class Usuario {
 	
-	private String login;
+    private String login;
     private String password;
     private double saldo;
     private ArrayList<Tiquete> tiquetesActivos;
@@ -67,14 +66,18 @@ public class Usuario {
         this.saldo += monto;
     }
     
-
     public boolean validarCredenciales(String login, String password) {
         return this.login.equals(login) && this.password.equals(password);
     }
     
     public void transferirTiquete(Tiquete tiqueteATransferir, Usuario usuarioDestino, String passwordEmisor) {
-    	if (tiqueteATransferir == null || usuarioDestino == null) {
+        if (tiqueteATransferir == null || usuarioDestino == null) {
             System.out.println("Error: datos incompletos.");
+            return;
+        }
+        
+        if (!this.tiquetesActivos.contains(tiqueteATransferir)) {
+            System.out.println("Error: no posee este tiquete.");
             return;
         }
     	
@@ -91,13 +94,11 @@ public class Usuario {
             return;
         }
 
-    	this.removerTiquete(tiqueteATransferir);
-    	usuarioDestino.agregarTiquete(tiqueteATransferir);
-    	
+        tiqueteATransferir.setUsuario(usuarioDestino);
+        
+        this.removerTiquete(tiqueteATransferir);
+        usuarioDestino.agregarTiquete(tiqueteATransferir);
+        
+        System.out.println("Tiquete " + tiqueteATransferir.getId() + " transferido  a " + usuarioDestino.getLogin());
     }
-
-
-
 }
-    
-    

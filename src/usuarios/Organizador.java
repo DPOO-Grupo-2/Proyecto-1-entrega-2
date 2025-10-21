@@ -122,10 +122,10 @@ public class Organizador extends Usuario {
 
     public Evento crearEvento(String nombre, Date fecha, int cantBasicos, int cantMultiples, int cantDeluxe, 
                               double cargoPorcentual, double cuotaAdicional, int maxBasicos, int maxDeluxe, 
-                              int maxMultiples, Venue venue) {
+                              int maxMultiples, Venue venue, Administrador administrador) {
         
-        if (venue == null) {
-            System.err.println("Error: venue nulo.");
+        if (venue == null || administrador == null) {
+            System.err.println("Error: venue o administrador nulos.");
             return null;
         }
         
@@ -187,13 +187,16 @@ public class Organizador extends Usuario {
                 maxMultiples,
                 this,      
                 venue, 
-                new Administrador("ADMIN", "ADMIN1", 0)
+                administrador  
         );
         
-        venue.setProximoEvento(nuevoEvento);
-        agregarEvento(nuevoEvento);
-
-        return nuevoEvento;
+        if (venue.agregarEvento(nuevoEvento)) {
+            agregarEvento(nuevoEvento);
+            return nuevoEvento;
+        } else {
+            System.err.println("Error: no se pudo agregar el evento al venue.");
+            return null;
+        }
     }
 
     public void crearOferta(Evento evento, Localidad localidad, double descuento, Date fechaInicio, Date fechaFin) {
@@ -234,6 +237,7 @@ public class Organizador extends Usuario {
 
         Oferta nuevaOferta = new Oferta(evento, localidad, descuento, fechaInicio, fechaFin);
         localidad.agregarOferta(nuevaOferta);
+        localidad.setDescuento(descuento);
     }
 
     public void sugerirVenue(Venue venue) {
@@ -286,11 +290,11 @@ public class Organizador extends Usuario {
                 double cuotaAdicional = evento.getCuotaAdicional();
                 int costoEmision = evento.getAdministrador() != null ? 
                                    evento.getAdministrador().getCostoFijoEmision() : 0;
+                double gananciaOrganizador = precioTotal - cuotaAdicional - costoEmision;
+                gananciaOrganizador = gananciaOrganizador / (1 + cargoPorcentual / 100.0);
                 
-                double precioBase = (precioTotal - cuotaAdicional - costoEmision) / (1 + cargoPorcentual / 100.0);
-                
-                if (precioBase > 0) {
-                    total += precioBase;
+                if (gananciaOrganizador > 0) {
+                    total += gananciaOrganizador;
                 }
             }
         }

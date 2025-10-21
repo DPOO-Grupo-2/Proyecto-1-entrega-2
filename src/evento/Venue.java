@@ -96,30 +96,70 @@ public class Venue {
         if (evento != null) {
             this.proximoEvento = evento.getNombreEvento();
             this.fechaProximoEvento = evento.getFecha();
-            eventosReservados.put(evento.getFecha(), evento);
+            if (validarDisponibilidad(evento.getFecha())) {
+                eventosReservados.put(evento.getFecha(), evento);
+            }
         }
     }
 
-	public boolean validarDisponibilidad(Date fecha) {
-		if (fecha == null) {
-	        System.err.println("Error: ingresa una fecha valida");
-	        return false;
-	    }
+    public boolean validarDisponibilidad(Date fecha) {
+        if (fecha == null) {
+            System.err.println("Error: ingresa una fecha valida");
+            return false;
+        }
 
-	    for (Date fechaReservada : eventosReservados.keySet()) {
-	        if (mismoDiaYHora(fecha, fechaReservada)) {
-	            return false; 
-	        }
-	    }
-	    return true; 
-	}
+        for (Date fechaReservada : eventosReservados.keySet()) {
+            if (mismoDia(fecha, fechaReservada)) {
+                return false; 
+            }
+        }
+        return true; 
+    }
 
-	private boolean mismoDiaYHora(Date f1, Date f2) {
-	    return f1 != null && f2 != null && f1.equals(f2);
-	
-	}
+    private boolean mismoDia(Date f1, Date f2) {
+        if (f1 == null || f2 == null) {
+            return false;
+        }
+        
+        java.util.Calendar cal1 = java.util.Calendar.getInstance();
+        java.util.Calendar cal2 = java.util.Calendar.getInstance();
+        cal1.setTime(f1);
+        cal2.setTime(f2);
+        
+        return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
+               cal1.get(java.util.Calendar.MONTH) == cal2.get(java.util.Calendar.MONTH) &&
+               cal1.get(java.util.Calendar.DAY_OF_MONTH) == cal2.get(java.util.Calendar.DAY_OF_MONTH);
+    }
     
+    public boolean agregarEvento(Evento evento) {
+        if (evento == null || evento.getFecha() == null) {
+            System.err.println("Error: evento o fecha nulos");
+            return false;
+        }
+        
+        if (!validarDisponibilidad(evento.getFecha())) {
+            System.err.println("Error: el venue no está disponible en la fecha ");
+            return false;
+        }
+        
+        eventosReservados.put(evento.getFecha(), evento);
+        this.proximoEvento = evento.getNombreEvento();
+        this.fechaProximoEvento = evento.getFecha();
+        return true;
+    }
+
+    public void removerEvento(Evento evento) {
+        if (evento != null && evento.getFecha() != null) {
+            eventosReservados.remove(evento.getFecha());
+            if (evento.getNombreEvento().equals(this.proximoEvento)) {
+                this.proximoEvento = null;
+                this.fechaProximoEvento = null;
+            }
+        }
+    }
     
-    
+    public Map<Date, Evento> getEventosReservados() {
+        return new HashMap<>(eventosReservados);
+    }
     
 }

@@ -10,13 +10,16 @@ public class PaqueteDeluxe {
     private Tiquete tiquete;
 
     public PaqueteDeluxe(String beneficiosAdicionales, String mercanciaAdicional, Tiquete tiquete) {
+        if (tiquete == null) {
+            System.err.println("Error: el tiquete no puede ser nulo.");
+            return;
+        }
+        
         this.beneficiosAdicionales = beneficiosAdicionales;
         this.mercanciaAdicional = mercanciaAdicional;
         this.tiquete = tiquete;
         
-        if (tiquete != null) {
-            tiquete.setTransferible(false);
-        }
+        tiquete.setTransferible(false);
     }
 
     public ArrayList<Tiquete> getTiquetesCortesia() {
@@ -25,7 +28,10 @@ public class PaqueteDeluxe {
 
     public void agregarTiqueteCortesia(Tiquete tiquete) {
         if (tiquete != null) {
+            tiquete.setTransferible(false);
             tiquetesCortesia.add(tiquete);
+        } else {
+            System.err.println("Error: no se puede agregar un tiquete nulo.");
         }
     }
 
@@ -34,6 +40,10 @@ public class PaqueteDeluxe {
     }
 
     public void setBeneficiosAdicionales(String beneficiosAdicionales) {
+        if (beneficiosAdicionales == null) {
+            System.err.println("Error: beneficios adicionales no puede ser nulo.");
+            return;
+        }
         this.beneficiosAdicionales = beneficiosAdicionales;
     }
 
@@ -42,6 +52,10 @@ public class PaqueteDeluxe {
     }
 
     public void setMercanciaAdicional(String mercanciaAdicional) {
+        if (mercanciaAdicional == null) {
+            System.err.println("Error: mercancía adicional no puede ser nulo.");
+            return;
+        }
         this.mercanciaAdicional = mercanciaAdicional;
     }
 
@@ -50,6 +64,11 @@ public class PaqueteDeluxe {
     }
 
     public void setTiquete(Tiquete tiquete) {
+        if (tiquete == null) {
+            System.err.println("Error: el tiquete no puede ser nulo.");
+            return;
+        }
+        tiquete.setTransferible(false);
         this.tiquete = tiquete;
     }
 }

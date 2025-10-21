@@ -10,10 +10,14 @@ public class TiqueteTemporada extends Tiquete {
     private ArrayList<Evento> eventosUsados = new ArrayList<Evento>();
     public double precio;
 
-    public TiqueteTemporada(String id, boolean transferible, String silla, Localidad localidad, 
-                            Evento evento, double precio, Usuario usuario) {
-        super(id, transferible, silla, localidad, evento, usuario);
-        this.precio = precio;
+    public TiqueteTemporada(String id, boolean transferible, String silla, Localidad localidad, Evento evento, double precio, Usuario usuario) {
+    	super(id, transferible, silla, localidad, evento, usuario);
+    	if (precio < 0) {
+            System.err.println("Error: el precio no puede ser negativo.");
+            this.precio = 0;
+        } else {
+            this.precio = precio;
+        }
     }
 
     public double getPrecioTiquete() {
@@ -21,6 +25,10 @@ public class TiqueteTemporada extends Tiquete {
     }
 
     public void setPrecio(double precio) {
+        if (precio < 0) {
+            System.err.println("Error: el precio no puede ser negativo.");
+            return;
+        }
         this.precio = precio;
     }
 
@@ -29,7 +37,11 @@ public class TiqueteTemporada extends Tiquete {
     }
 
     public void setUsados(ArrayList<Evento> usados) {
-        this.eventosUsados = usados;
+        if (usados == null) {
+            System.err.println("Error: la lista de eventos usados no puede ser nula.");
+            return;
+        }
+        this.eventosUsados = new ArrayList<>(usados);
     }
 
     public int size() {
@@ -42,22 +54,23 @@ public class TiqueteTemporada extends Tiquete {
             return;
         }
 
+        Evento eventoEncontrado = null;
+        int posicion = -1;
         boolean encontrado = false;
         int i = 0;
-        int pos = 0;
         
         while (!encontrado && i < this.eventos.size()) {
-            String evento1 = this.eventos.get(i).getNombreEvento();
-            
-            if (evento1.equals(nombreEvento)) {
+            Evento evento = this.eventos.get(i);
+            if (evento != null && nombreEvento.equals(evento.getNombreEvento())) {
+                eventoEncontrado = evento;
+                posicion = i;
                 encontrado = true;
-                pos = i;
             }
             i++;
         }
 
-        if (encontrado) {
-            Evento event = this.eventos.remove(pos);
+        if (eventoEncontrado != null) {
+            Evento event = this.eventos.remove(posicion);
             this.eventosUsados.add(event);
             
             if (this.eventos.isEmpty()) {
@@ -70,7 +83,4 @@ public class TiqueteTemporada extends Tiquete {
         }
     }
     
-    public void usarTiqueteTemporada(TiqueteTemporada tiquete, String nombreEvento) {
-        tiquete.usarTiqueteTemporada(nombreEvento);
-    }
 }

@@ -62,50 +62,30 @@ public class Cliente extends Usuario {
             this.tiquetesComprados.add(tiquete);
             this.agregarTiquete(tiquete);
             
-            this.historialTransacciones.add("Compra de tiquete realizada por un valor de $" + tiquete.getPrecio());
+            this.historialTransacciones.add("Compra de tiquete " + tiquete.getId() + " por valor de $" + precio);
             
         } else {
             System.err.println("Error: no se pudo generar el tiquete.");
         }
     }
 
-    public void transferirTiquete(Usuario emisor, Usuario receptor, Tiquete tiquete) {
-        if (emisor == null || receptor == null || tiquete == null) {
+    public void transferirTiquete(Tiquete tiquete, Usuario receptor, String password) {
+        if (tiquete == null || receptor == null) {
             System.err.println("Error: datos nulos.");
             return;
         }
         
-        if (!emisor.getTiquetesActivos().contains(tiquete)) {
-            System.err.println("Error: el emisor no posee este tiquete.");
-            return;
-        }
+        super.transferirTiquete(tiquete, receptor, password);
         
-        if (!tiquete.isTransferible()) {
-            System.err.println("Error: este tiquete no es transferible.");
-            return;
-        }
-        
-        if (tiquete.isUsado()) {
-            System.err.println("Error: no se puede transferir un tiquete usado.");
-            return;
-        }
-        
-        if (emisor.getLogin().equals(receptor.getLogin())) {
-            System.err.println("Error: no puedes transferirte a ti mismo.");
-            return;
-        }
-        
-        emisor.getTiquetesActivos().remove(tiquete);
-        receptor.getTiquetesActivos().add(tiquete);
-        tiquete.setUsuario(receptor);
-        
-        if (emisor instanceof Cliente) {
-            ((Cliente) emisor).getTiquetesComprados().remove(tiquete);
+        if (this.tiquetesComprados.contains(tiquete)) {
+            this.tiquetesComprados.remove(tiquete);
         }
         
         if (receptor instanceof Cliente) {
             ((Cliente) receptor).getTiquetesComprados().add(tiquete);
         }
+        
+        this.historialTransacciones.add("Transferencia de tiquete " + tiquete.getId() + " a " + receptor.getLogin());
     }
 
     public void cancelarTiquete(String codigoTiquete, String nombreEvento) {
@@ -113,26 +93,29 @@ public class Cliente extends Usuario {
             System.err.println("Error: datos nulos.");
             return;
         }
-        
-        ArrayList<Tiquete> tiquetesUsuario = this.tiquetesComprados;
-        boolean encontrado = false;
-        int i = 0;
-
-        while (!encontrado && i < tiquetesUsuario.size()) {
-            Tiquete tiquete = tiquetesUsuario.get(i);
+        Tiquete tiqueteEncontrado = null;
+        for (Tiquete tiquete : this.tiquetesComprados) {
             if (tiquete.getId().equals(codigoTiquete)) {
-                encontrado = true;
-            } else {
-                i++;
+                tiqueteEncontrado = tiquete;
+                break;
+            }
+        }
+        
+        if (tiqueteEncontrado == null) {
+            for (Tiquete tiquete : this.getTiquetesActivos()) {
+                if (tiquete.getId().equals(codigoTiquete)) {
+                    tiqueteEncontrado = tiquete;
+                    break;
+                }
             }
         }
 
-        if (!encontrado) {
+        if (tiqueteEncontrado == null) {
             System.err.println("Error: tiquete no encontrado.");
             return;
         }
 
-        Tiquete tiquete = tiquetesUsuario.get(i);
+        Tiquete tiquete = tiqueteEncontrado;
         ArrayList<Evento> eventos = tiquete.getEventos();
         
         if (eventos == null || eventos.isEmpty()) {
@@ -140,36 +123,29 @@ public class Cliente extends Usuario {
             return;
         }
         
-        boolean encontrado2 = false;
-        int j = 0;
-
-        while (!encontrado2 && j < eventos.size()) {
-            Evento evento = eventos.get(j);
+        Evento eventoEncontrado = null;
+        for (Evento evento : eventos) {
             if (nombreEvento.equals(evento.getNombreEvento())) {
-                encontrado2 = true;
-            } else {
-                j++;
+                eventoEncontrado = evento;
+                break;
             }
         }
 
-        if (!encontrado2) {
+        if (eventoEncontrado == null) {
             System.err.println("Error: evento no encontrado en el tiquete.");
             return;
         }
 
-        Evento evento = eventos.get(j);
+        Evento evento = eventoEncontrado;
         
-        if (evento.getAdministrador() != null && evento.getAdministrador().Reembolso(this, tiquete)) {
-
-            tiquetesUsuario.remove(i);
+        if (evento.getAdministrador() != null && evento.getAdministrador().reembolso(this, tiquete)) {
+            this.tiquetesComprados.remove(tiquete);
             this.removerTiquete(tiquete);
-            evento.getTiquetesVendidos().remove(tiquete);
-
+            
             this.historialTransacciones.add("Cancelación de tiquete aprobada: " + codigoTiquete);
+            System.out.println("Cancelación exitosa. Tiquete " + codigoTiquete + " cancelado.");
         } else {
-            System.err.println("Error: la cancelación no fue aprobado por el administrador.");
+            System.err.println("Error: la cancelación no fue aprobada por el administrador.");
         }
     }
-
-    
 }

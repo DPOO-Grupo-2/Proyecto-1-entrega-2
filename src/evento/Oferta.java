@@ -47,7 +47,8 @@ public class Oferta {
 
     public double calcularPrecioConDescuento(double precioBase, Date fechaActual) {
         if (estaVigente(fechaActual)) {
-            return precioBase * (1 - descuento / 100.0);
+            double precioConDescuento = precioBase * (1 - descuento / 100.0);
+            return precioConDescuento;
         }
         return precioBase;
     }

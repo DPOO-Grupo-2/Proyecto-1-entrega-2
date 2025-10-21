@@ -33,7 +33,11 @@ public abstract class Tiquete {
     }
 
     public void setEventos(ArrayList<Evento> eventos) {
-        this.eventos = eventos;
+    	if (eventos == null) {
+            System.err.println("Error: la lista de eventos no puede ser nula.");
+            return;
+        }
+        this.eventos = new ArrayList<>(eventos);
     }
 
     public Usuario getUsuario() {
@@ -41,6 +45,10 @@ public abstract class Tiquete {
     }
 
     public void setUsuario(Usuario usuario) {
+    	if (usuario == null) {
+            System.err.println("Error: usuario no puede ser nulo.");
+            return;
+        }
         this.usuario = usuario;
     }
 
@@ -53,7 +61,11 @@ public abstract class Tiquete {
     }
 
     public void setId(String id) {
-        this.id = id;
+    	 if (id == null) {
+             System.err.println("Error: ID no puede ser nulo o vacío.");
+             return;
+         }
+         this.id = id;
     }
 
     public void setTransferible(boolean transferible) {
@@ -77,6 +89,10 @@ public abstract class Tiquete {
     }
 
     public void setLocalidad(Localidad localidad) {
+    	if (localidad == null) {
+            System.err.println("Error: localidad no puede ser nula.");
+            return;
+        }
         this.localidad = localidad;
     }
 
@@ -88,5 +104,17 @@ public abstract class Tiquete {
     
     public double getPrecio() {
         return getPrecioTiquete();
+    }
+    
+    public void agregarEvento(Evento evento) {
+        if (evento != null && !eventos.contains(evento)) {
+            eventos.add(evento);
+        }
+    }
+    
+    public void removerEvento(Evento evento) {
+        if (evento != null) {
+            eventos.remove(evento);
+        }
     }
 }

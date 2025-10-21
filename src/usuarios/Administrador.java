@@ -120,7 +120,10 @@ public class Administrador extends Usuario {
         }
 
         evento.setCancelado(true);
-        evento.getOrganizador().removerEvento(evento);
+        
+        if (evento.getOrganizador() != null) {
+            evento.getOrganizador().removerEvento(evento);
+        }
 
         ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
         for (int i = 0; i < tiquetesVendidos.size(); i++) {
@@ -149,7 +152,10 @@ public class Administrador extends Usuario {
         }
 
         evento.setCancelado(true);
-        evento.getOrganizador().removerEvento(evento);
+        
+        if (evento.getOrganizador() != null) {
+            evento.getOrganizador().removerEvento(evento);
+        }
 
         ArrayList<Tiquete> tiquetesVendidos = evento.getTiquetesVendidos();
         for (int i = 0; i < tiquetesVendidos.size(); i++) {
@@ -157,22 +163,17 @@ public class Administrador extends Usuario {
             if (tiquete != null) {
                 Usuario usuario = tiquete.getUsuario();
                 if (usuario != null) {
-                	
-                    double precioTotal = tiquete.getPrecio();
-                    double cargoPorcentual = evento.getCargoPorcentual();
-                    double cuotaAdicional = evento.getCuotaAdicional();
+                    double reembolso = tiquete.getPrecio() - evento.getCuotaAdicional() - COSTOFIJOEMISION;
                     
-                    double precioBase = (precioTotal - cuotaAdicional - COSTOFIJOEMISION) / (1 + cargoPorcentual / 100.0);
-                    
-                    if (precioBase > 0) {
-                        usuario.actualizarSaldo(precioBase);
+                    if (reembolso > 0) {
+                        usuario.actualizarSaldo(reembolso);
                     }
                 }
             }
         }
     }
 
-    public boolean Reembolso(Usuario usuario, Tiquete tiquete) {
+    public boolean reembolso(Usuario usuario, Tiquete tiquete) {
         if (usuario == null || tiquete == null) {
             System.err.println("Error: usuario o tiquete nulos.");
             return false;
@@ -277,15 +278,7 @@ public class Administrador extends Usuario {
         for (int i = 0; i < tiquetesVendidos.size(); i++) {
             Tiquete tiquete = tiquetesVendidos.get(i);
             if (tiquete != null) {
-            	
-                double precioTotal = tiquete.getPrecio();
-                double cargoPorcentual = evento.getCargoPorcentual();
-                double cuotaAdicional = evento.getCuotaAdicional();
-                
-                double precioBase = (precioTotal - cuotaAdicional - COSTOFIJOEMISION) / (1 + cargoPorcentual / 100.0);
-                double sobrecargo = precioBase * (cargoPorcentual / 100.0);
-                
-                total += sobrecargo + COSTOFIJOEMISION;
+                total += evento.getCuotaAdicional() + COSTOFIJOEMISION;
             }
         }
 
