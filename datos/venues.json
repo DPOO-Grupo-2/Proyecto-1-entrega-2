@@ -1,0 +1,18 @@
+[
+  {
+    "ubicacion": "Bogotá",
+    "restriccionesDeUso": "No fumar",
+    "tipoVenue": "Estadio",
+    "aprobado": true,
+    "nombre": "Estadio El Campín",
+    "capacidad": 40000
+  },
+  {
+    "ubicacion": "Bogotá",
+    "restriccionesDeUso": "Vestimenta formal",
+    "tipoVenue": "Teatro",
+    "aprobado": true,
+    "nombre": "Teatro Colón",
+    "capacidad": 1200
+  }
+]

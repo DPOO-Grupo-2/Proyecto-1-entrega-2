@@ -1,0 +1,53 @@
+[
+  {
+    "password": "admin123",
+    "tipo": "ADMINISTRADOR",
+    "porcentajesServicio": {
+      "CULTURAL": 8.0,
+      "DEPORTIVO": 12.0,
+      "RELIGIOSO": 5.0,
+      "GENERAL": 10.0,
+      "MUSICAL": 10.0
+    },
+    "tiquetesIds": [],
+    "saldo": 0.0,
+    "login": "admin"
+  },
+  {
+    "password": "org123",
+    "tipo": "ORGANIZADOR",
+    "tiquetesIds": [],
+    "saldo": 1000000.0,
+    "login": "organizador1"
+  },
+  {
+    "password": "cli123",
+    "tipo": "CLIENTE",
+    "historialTransacciones": [],
+    "tiquetesIds": [
+      "TIQ-001",
+      "TIQ-MULTI-001"
+    ],
+    "saldo": 500000.0,
+    "login": "cliente1"
+  },
+  {
+    "password": "cli456",
+    "tipo": "CLIENTE",
+    "historialTransacciones": [],
+    "tiquetesIds": [
+      "TIQ-002",
+      "TIQ-TEMP-001"
+    ],
+    "saldo": 300000.0,
+    "login": "cliente2"
+  },
+  {
+    "password": "carlos123",
+    "tipo": "CLIENTE",
+    "historialTransacciones": [],
+    "tiquetesIds": [],
+    "saldo": 10000.0,
+    "login": "carlos"
+  }
+]

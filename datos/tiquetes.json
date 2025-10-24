@@ -1,0 +1,56 @@
+[
+  {
+    "precio": 300000.0,
+    "tipo": "TiqueteBasico",
+    "localidadNombre": "VIP",
+    "eventosNombres": [
+      "Shakira en Concierto"
+    ],
+    "usuarioLogin": "cliente1",
+    "usado": false,
+    "id": "TIQ-001",
+    "transferible": true,
+    "silla": "A-15"
+  },
+  {
+    "precio": 100000.0,
+    "tipo": "TiqueteBasico",
+    "localidadNombre": "General",
+    "eventosNombres": [
+      "Shakira en Concierto"
+    ],
+    "usuarioLogin": "cliente2",
+    "usado": false,
+    "id": "TIQ-002",
+    "transferible": true,
+    "silla": "B-23"
+  },
+  {
+    "precio": 1000000.0,
+    "tipo": "TiqueteMultiple",
+    "numeroDeTiquetes": 4,
+    "localidadNombre": "VIP",
+    "eventosNombres": [
+      "Shakira en Concierto"
+    ],
+    "usuarioLogin": "cliente1",
+    "usado": false,
+    "id": "TIQ-MULTI-001",
+    "transferible": false,
+    "silla": "C-10"
+  },
+  {
+    "precio": 80000.0,
+    "tipo": "TiqueteTemporada",
+    "localidadNombre": "Tribuna",
+    "eventosNombres": [
+      "Millonarios vs América",
+      "Santa Fe vs Nacional"
+    ],
+    "usuarioLogin": "cliente2",
+    "usado": false,
+    "id": "TIQ-TEMP-001",
+    "transferible": true,
+    "silla": "D-50"
+  }
+]

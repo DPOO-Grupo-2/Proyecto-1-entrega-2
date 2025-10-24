@@ -1,0 +1,113 @@
+[
+  {
+    "nombreEvento": "Shakira en Concierto",
+    "maxTiquetesPorTransaccion": 10,
+    "hora": "20:00",
+    "cantidadTiquetesMultiples": 100,
+    "administradorLogin": "admin",
+    "cargoPorcentual": 0.15,
+    "cantidadTiquetesDelux": 50,
+    "venueNombre": "Estadio El Campín",
+    "cantidadMaxDeluxe": 50,
+    "localidades": [
+      {
+        "precioMultiple": 250000.0,
+        "nombreLocalidad": "VIP",
+        "precioDelux": 500000.0,
+        "tieneNumeracion": true,
+        "descuento": 0.0,
+        "precioBasico": 300000.0,
+        "precioTemporada": 280000.0
+      },
+      {
+        "precioMultiple": 90000.0,
+        "nombreLocalidad": "General",
+        "precioDelux": 180000.0,
+        "tieneNumeracion": false,
+        "descuento": 0.0,
+        "precioBasico": 100000.0,
+        "precioTemporada": 95000.0
+      }
+    ],
+    "fecha": "2025-11-15T17:37:20",
+    "cantidadTiquetesBasicos": 1000,
+    "tiquetesVendidosIds": [
+      "TIQ-001",
+      "TIQ-002",
+      "TIQ-MULTI-001",
+      "67840938"
+    ],
+    "cancelado": false,
+    "tipoEvento": "MUSICAL",
+    "cantidadMaxTiquetesBasicos": 1000,
+    "organizadorLogin": "organizador1",
+    "cuotaAdicional": 5000.0,
+    "cantidadMaxMultiples": 100
+  },
+  {
+    "nombreEvento": "Millonarios vs América",
+    "maxTiquetesPorTransaccion": 10,
+    "hora": "00:00",
+    "cantidadTiquetesMultiples": 500,
+    "administradorLogin": "admin",
+    "cargoPorcentual": 0.1,
+    "cantidadTiquetesDelux": 100,
+    "venueNombre": "Estadio El Campín",
+    "cantidadMaxDeluxe": 100,
+    "localidades": [
+      {
+        "precioMultiple": 0.0,
+        "nombreLocalidad": "Tribuna",
+        "precioDelux": 0.0,
+        "tieneNumeracion": true,
+        "descuento": 0.0,
+        "precioBasico": 50000.0,
+        "precioTemporada": 45000.0
+      }
+    ],
+    "fecha": "2025-12-01T17:37:20",
+    "cantidadTiquetesBasicos": 5000,
+    "tiquetesVendidosIds": [
+      "TIQ-TEMP-001"
+    ],
+    "cancelado": false,
+    "tipoEvento": "DEPORTIVO",
+    "cantidadMaxTiquetesBasicos": 5000,
+    "organizadorLogin": "organizador1",
+    "cuotaAdicional": 3000.0,
+    "cantidadMaxMultiples": 500
+  },
+  {
+    "nombreEvento": "Santa Fe vs Nacional",
+    "maxTiquetesPorTransaccion": 10,
+    "hora": "00:00",
+    "cantidadTiquetesMultiples": 500,
+    "administradorLogin": "admin",
+    "cargoPorcentual": 0.1,
+    "cantidadTiquetesDelux": 100,
+    "venueNombre": "Estadio El Campín",
+    "cantidadMaxDeluxe": 100,
+    "localidades": [
+      {
+        "precioMultiple": 0.0,
+        "nombreLocalidad": "Tribuna",
+        "precioDelux": 0.0,
+        "tieneNumeracion": true,
+        "descuento": 0.0,
+        "precioBasico": 50000.0,
+        "precioTemporada": 45000.0
+      }
+    ],
+    "fecha": "2025-12-15T17:37:20",
+    "cantidadTiquetesBasicos": 5000,
+    "tiquetesVendidosIds": [
+      "TIQ-TEMP-001"
+    ],
+    "cancelado": false,
+    "tipoEvento": "DEPORTIVO",
+    "cantidadMaxTiquetesBasicos": 5000,
+    "organizadorLogin": "organizador1",
+    "cuotaAdicional": 3000.0,
+    "cantidadMaxMultiples": 500
+  }
+]
